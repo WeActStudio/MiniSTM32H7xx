@@ -1,11 +1,12 @@
-# STM32H7xx Core Board
-> `0.96''` TFT, TF Card, 16MB QSPI FLASH, DVP Port
+# STM32H7xx Core Board 
+## STM32H750VBT6 128KB ROM, 1MB RAM
+> `0.96''` ST7735 TFT, TF Card, 8MB QSPI FLASH(SPI1)， 8MB QSPI FLASH(QSPI1), 8Bit DVP Port
 
-# STM32H750VBT6
-> Freq 480Mhz,1MB RAM,128KB ROM,16MB Extern ROM(QSPI FLASH)
-# STM32H743VIT6
-> Freq 480Mhz,1MB RAM,2MB ROM,16MB Extern ROM(QSPI FLASH)
-## Coming Soon ...
-|![](Images/STM32H7xx-Top.jpg)|![](Images/STM32H7xx-Bottom.jpg)|
-| :--: | :--: |
+### 淘宝购买链接
+1. [WeAct Studio官方店](https://shop118454188.taobao.com/index.htm?spm=2013.1.w5002-17867322799.2.212f5cb16nqwNP)
+
+![](Images/STM32H750VB_1.jpg)
+![](Images/STM32H750VB_2.jpg)
+
+
 

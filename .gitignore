@@ -1,6 +1,17 @@
 # Prerequisites
 *.d
 
+.mxproject
+
+*.scvd
+*.lst
+*.dep
+*.iex
+*.uvguix.*
+UNSupport/
+DebugConfig/
+RTE/
+
 # Object files
 *.o
 *.ko
@@ -34,7 +45,6 @@
 *.app
 *.i*86
 *.x86_64
-*.hex
 
 # Debug files
 *.dSYM/
