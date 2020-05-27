@@ -12,7 +12,7 @@
 #define __OMV_BOARDCONFIG_H__
 
 // Architecture info
-#define OMV_ARCH_STR            "OMV4 H7 1024" // 33 chars max
+#define OMV_ARCH_STR            "WeAct H7xx 1024" // 33 chars max
 #define OMV_BOARD_TYPE          "H7"
 #define OMV_UNIQUE_ID_ADDR      0x1FF1E800
 
