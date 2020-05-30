@@ -63,6 +63,7 @@ if sensor.get_id() != sensor.OV5640:
     print('Only run for ov5640')
     sys.exit(0)
 
+print('ov5640 AF Firmware Init ...')
 OV5640AF_Init()
 
 clock = time.clock()

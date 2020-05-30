@@ -16,13 +16,19 @@
 #define OMV_BOARD_TYPE          "H7"
 #define OMV_UNIQUE_ID_ADDR      0x1FF1E800
 
+// OpenMV Run in QSPI Flash
+// if not define this run in Internal Flash
+//#define OMV_RUN_QSPI
+
 // Flash sectors for the bootloader.
 // Flash FS sector, main FW sector, max sector.
- #define OMV_FLASH_LAYOUT        {1, 2, 15}
+#define OMV_FLASH_LAYOUT        {1, 2, 15}
 
 // QSPI Flash layout for the bootloader.
 // First block, maximum block, block size in bytes.
+#if !defined(OMV_RUN_QSPI)
 #define OMV_QSPIF_LAYOUT        {0, 127, 64*1024}
+#endif
 
 #define OMV_XCLK_MCO            (0U)
 #define OMV_XCLK_TIM            (1U)
@@ -105,11 +111,11 @@
 
 // HSE/HSI/CSI State
 #define OMV_OSC_HSE_STATE       (RCC_HSE_ON)
-#define OMV_OSC_HSI_STATE       (RCC_HSI_OFF)
+#define OMV_OSC_HSI_STATE       (RCC_HSI_ON)
 #define OMV_OSC_CSI_STATE       (RCC_CSI_OFF)
 
 // Flash Latency
-#define OMV_FLASH_LATENCY       (FLASH_LATENCY_2)
+#define OMV_FLASH_LATENCY       (FLASH_LATENCY_4)
 
 // Linker script constants (see the linker script template stm32fxxx.ld.S).
 // Note: fb_alloc is a stack-based, dynamically allocated memory on FB.
@@ -124,7 +130,7 @@
 #define OMV_FB_SIZE             (400K)      // FB memory: header + VGA/GS image
 #define OMV_FB_ALLOC_SIZE       (96K)       // minimum fb alloc size
 #define OMV_STACK_SIZE          (15K)
-#define OMV_HEAP_SIZE           (229K)
+#define OMV_HEAP_SIZE           (228K)
 
 #define OMV_LINE_BUF_SIZE       (3K)        // Image line buffer round(640 * 2BPP * 2 buffers).
 #define OMV_MSC_BUF_SIZE        (12K)       // USB MSC bot data
@@ -133,8 +139,15 @@
 
 #define OMV_BOOT_ORIGIN         0x08000000
 #define OMV_BOOT_LENGTH         128K
-#define OMV_TEXT_ORIGIN         0x08040000
-#define OMV_TEXT_LENGTH         1792K
+
+#if defined(OMV_RUN_QSPI)
+    #define OMV_TEXT_ORIGIN         0x90000000
+    #define OMV_TEXT_LENGTH         8192K
+#else
+    #define OMV_TEXT_ORIGIN         0x08040000
+    #define OMV_TEXT_LENGTH         1792K
+#endif
+
 #define OMV_CCM_ORIGIN          0x20000000  // Note accessible by CPU and MDMA only.
 #define OMV_CCM_LENGTH          128K
 #define OMV_SRAM1_ORIGIN        0x30000000
@@ -184,11 +197,8 @@
 #define DCMI_TIM_CLK_DISABLE()  __TIM1_CLK_DISABLE()
 #define DCMI_TIM_PCLK_FREQ()    HAL_RCC_GetPCLK2Freq()
 
-#define DCMI_RESET_PIN          (GPIO_PIN_10)
-#define DCMI_RESET_PORT         (GPIOA)
-
 #define DCMI_PWDN_PIN           (GPIO_PIN_7)
-#define DCMI_PWDN_PORT          (GPIOD)
+#define DCMI_PWDN_PORT          (GPIOA)
 
 #define DCMI_D0_PIN             (GPIO_PIN_6)
 #define DCMI_D1_PIN             (GPIO_PIN_7)
@@ -216,8 +226,8 @@
 #define DCMI_VSYNC_PORT         (GPIOB)
 #define DCMI_PXCLK_PORT         (GPIOA)
 
-#define DCMI_RESET_LOW()        HAL_GPIO_WritePin(DCMI_RESET_PORT, DCMI_RESET_PIN, GPIO_PIN_RESET)
-#define DCMI_RESET_HIGH()       HAL_GPIO_WritePin(DCMI_RESET_PORT, DCMI_RESET_PIN, GPIO_PIN_SET)
+#define DCMI_RESET_LOW()        
+#define DCMI_RESET_HIGH()       
 
 #define DCMI_PWDN_LOW()         HAL_GPIO_WritePin(DCMI_PWDN_PORT, DCMI_PWDN_PIN, GPIO_PIN_RESET)
 #define DCMI_PWDN_HIGH()        HAL_GPIO_WritePin(DCMI_PWDN_PORT, DCMI_PWDN_PIN, GPIO_PIN_SET)
