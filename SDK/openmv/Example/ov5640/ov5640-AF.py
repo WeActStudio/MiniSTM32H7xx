@@ -11,45 +11,48 @@ from pyb import LED,Pin
 
 # OV5640 AF 固件初始化
 def OV5640AF_Init():
-    AFConfigFile = open('AF_REG.txt','r')
-    addr=0x8000
-    sensor.__write_reg(0x3000,0x20)
-    while True:
-        AFConfig=AFConfigFile.readline()
-        if not AFConfig:
-            break
-        str_new = AFConfig.replace(' ', '')
-        str_new = str_new.replace(',', '')
-        str_new = str_new.replace('0x', '')
-        str_new = str_new[:-8]
-        len_s = int(len(str_new)/2)
-        list_nums = []
-        i = 0
-        for i in range(0, len_s):
-            chs = str_new[2*i : 2*i + 2]
-            num = int(chs, 16)
-            list_nums.append(num)
-        bys = bytes(list_nums)
-        # print(bys)
-        for char in bys:
-            sensor.__write_reg(addr,char)
-            addr += 1
-    sensor.__write_reg(0x3022,0x00)
-    sensor.__write_reg(0x3023,0x00)
-    sensor.__write_reg(0x3024,0x00)
-    sensor.__write_reg(0x3025,0x00)
-    sensor.__write_reg(0x3026,0x00)
-    sensor.__write_reg(0x3027,0x00)
-    sensor.__write_reg(0x3028,0x00)
-    sensor.__write_reg(0x3029,0x7f)
-    sensor.__write_reg(0x3000,0x00)
+    result = sensor.__read_reg(0x3029)
+    print('FW_STATUS: %X' %result)
+    if result == 0x00:
+        AFConfigFile = open('AF_REG.txt','r')
+        addr=0x8000
+        sensor.__write_reg(0x3000,0x20)
+        while True:
+            AFConfig=AFConfigFile.readline()
+            if not AFConfig:
+                break
+            str_new = AFConfig.replace(' ', '')
+            str_new = str_new.replace(',', '')
+            str_new = str_new.replace('0x', '')
+            str_new = str_new[:-8]
+            len_s = int(len(str_new)/2)
+            list_nums = []
+            i = 0
+            for i in range(0, len_s):
+                chs = str_new[2*i : 2*i + 2]
+                num = int(chs, 16)
+                list_nums.append(num)
+            bys = bytes(list_nums)
+            # print(bys)
+            for char in bys:
+                sensor.__write_reg(addr,char)
+                addr += 1
+        sensor.__write_reg(0x3022,0x00)
+        sensor.__write_reg(0x3023,0x00)
+        sensor.__write_reg(0x3024,0x00)
+        sensor.__write_reg(0x3025,0x00)
+        sensor.__write_reg(0x3026,0x00)
+        sensor.__write_reg(0x3027,0x00)
+        sensor.__write_reg(0x3028,0x00)
+        sensor.__write_reg(0x3029,0x7f)
+        sensor.__write_reg(0x3000,0x00)
 
-    while(True):
-        result = sensor.__read_reg(0x3029)
-        print('FW_STATUS: %X' %result)
-        if result != 0x7F:
-            break;
-        sleep(500);
+        while(True):
+            result = sensor.__read_reg(0x3029)
+            print('FW_STATUS: %X' %result)
+            if result != 0x7F:
+                break;
+            sleep(500);
 
 
 blue_led = LED(1)
