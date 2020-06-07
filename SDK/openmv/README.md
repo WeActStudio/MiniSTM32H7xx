@@ -1,4 +1,33 @@
 # WeAct Studio STM32H7xx
+
+1. Example -> 例程
+2. Firmwares -> openmv固件，内有烧录下载教程
+3. Ports -> WeAct Studio STM32H750 核心板接口定义
+
+## 接口定义 Interface Definition
+```
+代号，实际管脚名
+Code name, Actual pin name
+P0,PB15
+P1,PB14
+P2,PB13
+P3,PB12
+P4,PB10
+P5,PB11
+P6,PA5
+P7,PD12
+P8,PD13
+P9,PD14
+P10,PD15
+P11,PA13
+P12,PA14
+P13,PA0
+P14,PA1
+P15,PA2
+P16,PA3
+LED_BLUE,PE3
+```
+
 ## How to Build OpenMV
 
 1. Clone openmv source code

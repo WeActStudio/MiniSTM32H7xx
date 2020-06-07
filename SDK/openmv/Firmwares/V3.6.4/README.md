@@ -13,7 +13,13 @@ openmv.*      -> 0x08000000
 
 openmv.* 为bootloader和firmware两个固件的合并固件，按需选择烧录即可
 
-> 固件下载需要使用USB模式下载，ST-Link下载会有大小限制，可以使用`WeAct Studio USB Download Tool`（位于Soft文件夹）或者使用STM32CubeProg进行下载，建议使用`WeAct Studio USB Download Tool`烧录openmv.bin文件
+> 固件下载需要使用USB模式下载，ST-Link下载会有大小限制，可以使用`WeAct Studio USB Download Tool`（位于Soft文件夹）或者使用STM32CubeProg进行下载，建议使用`WeAct Studio USB Download Tool`烧录openmv.bin文件，百度网盘有下载烧录视频教程
+
+```
+>> 下载烧录视频教程
+百度网盘: https://pan.baidu.com/s/1wPy3f_cRzPJc_YnOVKTprA 
+提取码: rji7
+```
 
 # QSPI Flash
 固件放置在外部8MB QSPI Flash，所以需要下载0x08000000.hex，初始化QSPI外设，将QSPI Flash映射到0x90000000。
