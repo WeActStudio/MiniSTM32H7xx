@@ -5,6 +5,7 @@
 3. Ports -> WeAct Studio STM32H750 核心板接口定义
 
 ## 接口定义 Interface Definition
+> 具体接口定义(Concrete interface definition) `Ports\micropython\boards\WeActStudioSTM32H7xx\mpconfigboard.h`
 ```
 代号，实际管脚名
 Code name, Actual pin name
