@@ -190,12 +190,27 @@ static void CPU_CACHE_Enable(void)
   SCB_EnableDCache();
 }
 
-void LED_Blink(uint32_t delay)
+static void LED_Blink(uint32_t Hdelay,uint32_t Ldelay)
 {
 	HAL_GPIO_WritePin(E3_GPIO_Port,E3_Pin,GPIO_PIN_SET);
-	HAL_Delay(delay - 1);
+	HAL_Delay(Hdelay - 1);
 	HAL_GPIO_WritePin(E3_GPIO_Port,E3_Pin,GPIO_PIN_RESET);
-	HAL_Delay(500-1);
+	HAL_Delay(Ldelay-1);
+}
+
+/**
+  * @brief  Get the current time and date.
+  * @param  
+  * @retval None
+  */
+static void RTC_CalendarShow(RTC_DateTypeDef *sdatestructureget,RTC_TimeTypeDef *stimestructureget)
+{
+  /* 必须同时获取时间和日期 不然会导致下次RTC不能读取 */
+  /* Both time and date must be obtained or RTC cannot be read next time */
+  /* Get the RTC current Time */
+  HAL_RTC_GetTime(&hrtc, stimestructureget, RTC_FORMAT_BIN);
+  /* Get the RTC current Date */
+  HAL_RTC_GetDate(&hrtc, sdatestructureget, RTC_FORMAT_BIN);
 }
 
 /* USER CODE END 0 */
@@ -246,16 +261,25 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	uint8_t text[20];
+	RTC_DateTypeDef sdatestructureget;
+	RTC_TimeTypeDef stimestructureget;
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+		RTC_CalendarShow(&sdatestructureget,&stimestructureget);
 		
+		if(stimestructureget.Seconds % 2 == 1)
+				sprintf((char *)&text,"WeAct Studio %02d:%02d",stimestructureget.Hours,stimestructureget.Minutes);
+			else
+				sprintf((char *)&text,"WeAct Studio %02d %02d",stimestructureget.Hours,stimestructureget.Minutes);
+		LCD_ShowString(4,4,160,16,16,text);
+			
 		sprintf((char *)&text,"Tick: %d ms",HAL_GetTick());
 		LCD_ShowString(4,58,160,16,16,text);
 		
-		LED_Blink(3);
+		LED_Blink(3,500);
 		
   }
   /* USER CODE END 3 */
@@ -340,7 +364,7 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
-  LED_Blink(500);
+  LED_Blink(500,500);
   /* USER CODE END Error_Handler_Debug */
 }
 

@@ -2,7 +2,7 @@
 ## STM32H750VBT6 128KB ROM, 1MB RAM
 > `0.96''` ST7735 TFT, TF Card, 8MB QSPI FLASH(SPI1)， 8MB QSPI FLASH(QSPI1), 8Bit DVP Port
 
-> support openmv frimware, see SDK/openmv
+> support openmv firmware, see SDK/openmv
 
 * ARM Cortex M7
 * 480Mhz Max. Freq
