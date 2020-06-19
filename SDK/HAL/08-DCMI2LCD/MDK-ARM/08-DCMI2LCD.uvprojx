@@ -18,7 +18,7 @@
           <Vendor>STMicroelectronics</Vendor>
           <PackID>Keil.STM32H7xx_DFP.2.5.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
-          <Cpu>IRAM(0x20000000-0x2001FFFF) IRAM2(0x24000000-0x2407FFFF) IROM(0x8000000-0x801FFFF)  CLOCK(12000000) FPU3(DFPU) CPUTYPE("Cortex-M7") ELITTLE</Cpu>
+          <Cpu>IRAM(0x20000000-0x2001FFFF) IRAM2(0x24000000-0x2407FFFF) IROM(0x8000000-0x801FFFF)   CLOCK(12000000) FPU3(DFPU) CPUTYPE("Cortex-M7") ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
           <FlashDriverDll></FlashDriverDll>
@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32H750xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;    ../Drivers/STM32H7xx_HAL_Driver/Inc;    ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy;    ../Drivers/CMSIS/Device/ST/STM32H7xx/Include;    ../Drivers/CMSIS/Include;    ..\Drivers\BSP\Camera;    ..\Drivers\BSP\ST7735</IncludePath>
+              <IncludePath>../Inc;     ../Drivers/STM32H7xx_HAL_Driver/Inc;     ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy;     ../Drivers/CMSIS/Device/ST/STM32H7xx/Include;     ../Drivers/CMSIS/Include;     ..\Drivers\BSP\Camera;     ..\Drivers\BSP\ST7735</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -593,6 +593,16 @@
               <FileType>1</FileType>
               <FilePath>..\Drivers\BSP\Camera\ov7670_regs.c</FilePath>
             </File>
+            <File>
+              <FileName>ov7725_regs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\Camera\ov7725_regs.c</FilePath>
+            </File>
+            <File>
+              <FileName>ov7725.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\Camera\ov7725.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -612,6 +622,11 @@
               <FileName>st7735_reg.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\BSP\ST7735\st7735_reg.c</FilePath>
+            </File>
+            <File>
+              <FileName>logo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\ST7735\logo.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1207,6 +1222,16 @@
               <FileType>1</FileType>
               <FilePath>..\Drivers\BSP\Camera\ov7670_regs.c</FilePath>
             </File>
+            <File>
+              <FileName>ov7725_regs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\Camera\ov7725_regs.c</FilePath>
+            </File>
+            <File>
+              <FileName>ov7725.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\Camera\ov7725.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1226,6 +1251,11 @@
               <FileName>st7735_reg.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\BSP\ST7735\st7735_reg.c</FilePath>
+            </File>
+            <File>
+              <FileName>logo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\ST7735\logo.c</FilePath>
             </File>
           </Files>
         </Group>

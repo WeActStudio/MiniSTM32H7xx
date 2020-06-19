@@ -261,7 +261,7 @@ int main(void)
 		
 	  LED_Blink(5,500);
 		
-	  sprintf((char *)&text,"Long Press K1 to Run");
+	  sprintf((char *)&text,"LongPress K1 to Run");
 	  LCD_ShowString(0,58,160,16,16,text);
 		
 		LED_Blink(5,500);

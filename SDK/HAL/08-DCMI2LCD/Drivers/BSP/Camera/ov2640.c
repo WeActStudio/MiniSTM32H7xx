@@ -131,11 +131,12 @@ static void wrSensorRegs(const uint8_t (*regs)[2])
 //----------------
 static int reset()
 {
+	  ov2640_delay(100);
     // Reset all registers
     OV2640_WR_Reg(BANK_SEL, BANK_SEL_SENSOR);
     OV2640_WR_Reg(COM7, COM7_SRST);
     // Delay 5 ms
-    ov2640_delay(100);
+    ov2640_delay(5);
     wrSensorRegs(ov2640_reg_tables);
     // 30 ms
     ov2640_delay(30);

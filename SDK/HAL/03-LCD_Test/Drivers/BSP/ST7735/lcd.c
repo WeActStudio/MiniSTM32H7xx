@@ -50,22 +50,29 @@ void LCD_Test(void)
 	ST7735_LCD_Driver.Init(&st7735_pObj,ST7735_FORMAT_RBG565,ST7735_ORIENTATION_LANDSCAPE_ROT180);
 	ST7735_LCD_Driver.ReadID(&st7735_pObj,&st7735_id);
 	
-	LCD_SetBrightness(10);
+	LCD_SetBrightness(0);
 	
 	ST7735_LCD_Driver.DrawBitmap(&st7735_pObj,0,0,WeActStudiologo);
-	delay_ms(500);
 	
 	uint32_t tick=get_tick();
 	while(HAL_GPIO_ReadPin(KEY_GPIO_Port,KEY_Pin) != GPIO_PIN_SET)
 	{
 		delay_ms(10);
 		
-		sprintf((char *)&text,"%03d",(get_tick()-tick)/10);
-	  LCD_ShowString(130,1,160,16,16,text);
-		ST7735_LCD_Driver.FillRect(&st7735_pObj,0,77,(get_tick()-tick)*160/2000,3,0xFFFF);
-		
-		if(get_tick()-tick > 2000) break;
+		if(get_tick()-tick <= 1000) LCD_SetBrightness((get_tick()-tick)*100/1000);
+		else if(get_tick()-tick <= 3000)
+		{
+			sprintf((char *)&text,"%03d",(get_tick()-tick-1000)/10);
+			LCD_ShowString(130,1,160,16,16,text);
+			ST7735_LCD_Driver.FillRect(&st7735_pObj,0,77,(get_tick()-tick-1000)*160/2000,3,0xFFFF);
+		}
+		else if(get_tick()-tick > 3000) break;
 	}
+	while(HAL_GPIO_ReadPin(KEY_GPIO_Port,KEY_Pin) == GPIO_PIN_SET)
+	{
+		delay_ms(10);
+	}
+	LCD_Light(0,300);
 	
 	ST7735_LCD_Driver.FillRect(&st7735_pObj,0,0,160,80,BLACK);
 	
@@ -75,8 +82,8 @@ void LCD_Test(void)
 	LCD_ShowString(4,22,160,16,16,text);
 	sprintf((char *)&text,"LCD ID: 0x%X",st7735_id);
 	LCD_ShowString(4,40,160,16,16,text);
-
 	
+	LCD_Light(100,200);
 }
 
 void LCD_SetBrightness(uint32_t Brightness)
@@ -84,6 +91,54 @@ void LCD_SetBrightness(uint32_t Brightness)
 	__HAL_TIM_SetCompare(LCD_Brightness_timer,LCD_Brightness_channel,Brightness);
 }
 
+uint32_t LCD_GetBrightness(void)
+{
+	return __HAL_TIM_GetCompare(LCD_Brightness_timer,LCD_Brightness_channel);
+}
+
+// 屏幕逐渐变亮或者变暗
+// Brightness_Dis: 目标值
+// time: 达到目标值的时间,单位: ms
+void LCD_Light(uint32_t Brightness_Dis,uint32_t time)
+{
+	uint32_t Brightness_Now;
+	uint32_t time_now;
+	float temp1,temp2;
+	float k,set;
+	
+	Brightness_Now = LCD_GetBrightness();
+	time_now = 0;
+	if(Brightness_Now == Brightness_Dis)
+		return;
+	
+	if(time == time_now)
+		return;
+	
+	temp1 = Brightness_Now;
+	temp1 = temp1 - Brightness_Dis;
+	temp2 = time_now;
+	temp2 = temp2 - time;
+	
+	k = temp1 / temp2;
+	
+	uint32_t tick=get_tick();
+	while(1)
+	{
+		delay_ms(1);
+		
+		time_now = get_tick()-tick;
+		
+		temp2 = time_now - 0;
+		
+		set = temp2*k + Brightness_Now;
+		
+		LCD_SetBrightness((uint32_t)set);
+		
+		if(time_now >= time) break;
+		
+	}
+}
+	
 uint16_t POINT_COLOR=0xFFFF;	//画笔颜色
 uint16_t BACK_COLOR=BLACK;  //背景色 
 //在指定位置显示一个字符
@@ -252,3 +307,4 @@ static int32_t lcd_recvdata(uint8_t* pdata,uint32_t length)
 	result /= -result;
 	return result;
 }
+

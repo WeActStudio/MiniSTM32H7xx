@@ -1,6 +1,7 @@
 #include "camera.h"
 #include "ov7670.h"
 #include "ov2640.h"
+#include "ov7725.h"
 
 Camera_HandleTypeDef hcamera;
 // Resolution table
@@ -127,6 +128,16 @@ void Camera_Init_Device(I2C_HandleTypeDef *hi2c)
 		if(hcamera.manuf_id == 0x7fa2 && ((hcamera.device_id - 0x2641) <=2 ))
 			ov2640_init();
 		else
-			Error_Handler();
+		{
+			hcamera.addr = OV7725_ADDRESS;
+			Camera_read_id(&hcamera);
+			if(hcamera.manuf_id == 0x7fa2 && ((hcamera.device_id - 0x7721) <=2 ))
+				ov7725_init();
+			else
+			{
+				hcamera.addr = 0;
+				hcamera.device_id = 0;
+			}
+		}
 	}
 }

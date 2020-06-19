@@ -4,9 +4,11 @@
 #include "main.h"
 
 #define OV2640_ADDRESS 0x60
+#define OV7725_ADDRESS 0x42
 
 #define Camera_OK 0
 #define camera_ERROR 1
+#define Camera_delay HAL_Delay
 
 struct regval_t{
 	uint8_t reg_addr;
@@ -18,6 +20,8 @@ typedef enum {
 	PIXFORMAT_RGB565,    // 2BPP/RGB565
 	PIXFORMAT_JPEG,      // JPEG/COMPRESSED
 	PIXFORMAT_YUV422,
+	PIXFORMAT_GRAYSCALE,
+	PIXFORMAT_BAYER,
 } pixformat_t;
 
 typedef enum {
