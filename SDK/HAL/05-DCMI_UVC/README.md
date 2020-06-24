@@ -1,6 +1,8 @@
 # WeAct Studio
 ## DCMI UVC Test
 
-TF卡读写测试，通过USB模拟成一个U盘
+DCMI UVC测试，模拟USB摄像头，分辨率为160x120,帧率约为14FPS
+* 支持OV2640,OV7725，OV7670
 
-TF card read and write test, through USB simulation into a U disk
+DCMI UVC test, analog USB camera, 160x120 resolution, frame rate is about 14FPS
+* Support for OV2640,OV7725, OV7670
