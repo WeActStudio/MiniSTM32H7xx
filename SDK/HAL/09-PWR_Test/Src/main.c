@@ -96,6 +96,36 @@ int main(void)
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
 	
+	if(__HAL_RCC_GET_FLAG(RCC_FLAG_SFTRST))
+	{
+		// System reset from CPU reset flag
+		LED_Blink(500,200);
+	}
+	else if(__HAL_RCC_GET_FLAG(RCC_FLAG_PORRST))
+	{
+		// POR/PDR  reset
+		LED_Blink(500,200);
+		LED_Blink(500,200);
+	}
+	else if(__HAL_RCC_GET_FLAG(RCC_FLAG_PINRST))
+	{
+		// Pin reset
+		LED_Blink(500,200);
+		LED_Blink(500,200);
+		LED_Blink(500,200);
+	}
+	__HAL_RCC_CLEAR_RESET_FLAGS();
+	
+	/* Check if the system was resumed from Standby mode */
+  if (__HAL_PWR_GET_FLAG(PWR_FLAG_SB) != RESET)
+  {
+		/* Clear Standby flag */
+	  __HAL_PWR_CLEAR_FLAG(PWR_FLAG_SB);
+    /* Blink LED to indicate that the system was resumed from Standby mode */
+    LED_Blink(10,250);
+		LED_Blink(10,250);
+  }
+	
 	if(HAL_PWREx_GetWakeupFlag(PWR_WAKEUP_FLAG4))
 	{
 		/* Blink LED to indicate that the system was resumed from Standby mode */
@@ -113,9 +143,9 @@ int main(void)
 	
   /* Disable used wakeup source: PWR_WAKEUP_PIN4 */
   HAL_PWR_DisableWakeUpPin(PWR_WAKEUP_PIN4);
-
-  /* Clear related wakeup flags: PWR_WAKEUP_FLAG4 */
-  HAL_PWREx_ClearWakeupFlag(PWR_WAKEUP_FLAG4);
+	
+	/* Clear related wakeup flags: PWR_WAKEUP_FLAG4 */
+	HAL_PWREx_ClearWakeupFlag(PWR_WAKEUP_FLAG4);
 	
   /* Enable WakeUp Pin PWR_WAKEUP_PIN4 connected to PC.13 */
   /* PWR_WAKEUP_PINx = Wake-Up x * 2 ,ex. Wake-Up 2 -> PWR_WAKEUP_PIN4 */
@@ -124,16 +154,9 @@ int main(void)
   sPinParams.PinPolarity  = PWR_PIN_POLARITY_LOW;
   sPinParams.PinPull      = PWR_PIN_PULL_DOWN;
   HAL_PWREx_EnableWakeUpPin(&sPinParams);
-	
-	/* Check if the system was resumed from Standby mode */
-  if (__HAL_PWR_GET_FLAG(PWR_FLAG_SB) != RESET)
-  {
-		/* Clear Standby flag */
-	  __HAL_PWR_CLEAR_FLAG(PWR_FLAG_SB);
-    /* Blink LED to indicate that the system was resumed from Standby mode */
-    LED_Blink(10,250);
-		LED_Blink(10,250);
-  }
+  
+	/* Clear related wakeup flags: PWR_WAKEUP_FLAG4 */
+	HAL_PWREx_ClearWakeupFlag(PWR_WAKEUP_FLAG4);
 	
   HAL_PWR_EnterSTANDBYMode();
   /* USER CODE END 2 */
