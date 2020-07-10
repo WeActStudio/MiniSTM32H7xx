@@ -20,3 +20,11 @@
 
 ## QSPI Flash
 > 固件放置在外部8MB QSPI Flash，所以需要下载0x08000000.hex，初始化QSPI外设，将QSPI Flash映射到0x90000000。
+
+[STM32 下载烧录教程以及问题汇总](http://www.weact-tc.cn/2019/11/30/STM32Download/)
+```
+>> 下载烧录视频教程
+见WeAct Studio Download Tool 烧录教程.mp4
+百度网盘: https://pan.baidu.com/s/1wPy3f_cRzPJc_YnOVKTprA 
+提取码: rji7
+```

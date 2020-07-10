@@ -4,9 +4,6 @@
 #include "main.h"
 #include "camera.h"
 
-
-#define OV7670_ADDRESS 0x42
-
 #define OV7670_OK 0
 #define OV7670_ERROR 1
 

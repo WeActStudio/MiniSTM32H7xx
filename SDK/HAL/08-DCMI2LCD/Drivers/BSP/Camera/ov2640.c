@@ -137,7 +137,7 @@ static int reset()
     OV2640_WR_Reg(COM7, COM7_SRST);
     // Delay 5 ms
     ov2640_delay(5);
-    wrSensorRegs(ov2640_reg_tables);
+    wrSensorRegs(ov2640_Slow_regs);
     // 30 ms
     ov2640_delay(30);
 
@@ -497,8 +497,9 @@ int ov2640_init(void)
 {
 	reset();
 	hcamera.framesize = FRAMESIZE_QQVGA;
+	hcamera.pixformat = PIXFORMAT_RGB565;
 	//set_framesize(FRAMESIZE_QQVGA);
-	set_pixformat(PIXFORMAT_RGB565);
+	set_pixformat(hcamera.pixformat);
 	set_hmirror(0);
 	set_vflip(0);
   return 0;

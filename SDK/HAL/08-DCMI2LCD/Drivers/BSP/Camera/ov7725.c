@@ -8,7 +8,6 @@ static uint8_t ov7725_WR_Reg(uint8_t reg, uint8_t data)
     return 0;
 }
 
-//---------------------------------------
 static uint8_t ov7725_RD_Reg(uint8_t reg,uint8_t *data)
 {
     return Camera_ReadReg(&hcamera,reg,data);
@@ -148,7 +147,8 @@ int ov7725_init(void)
 {
 	ov7725_reset();
 	hcamera.framesize = FRAMESIZE_QQVGA;
-	ov7725_set_pixformat(PIXFORMAT_RGB565);
+	hcamera.pixformat = PIXFORMAT_RGB565;
+	ov7725_set_pixformat(hcamera.pixformat);
 	ov7725_set_framesize(hcamera.framesize);
 	ov7725_set_hmirror(1);
 	ov7725_set_vflip(1);

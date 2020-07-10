@@ -32,6 +32,11 @@ extern uint16_t BACK_COLOR;  //±³¾°É«
 void LCD_Test(void);
 void LCD_SetBrightness(uint32_t Brightness);
 uint32_t LCD_GetBrightness(void);
+void LCD_SoftPWMEnable(uint8_t enable);
+uint8_t LCD_SoftPWMIsEnable(void);
+void LCD_SoftPWMCtrlInit(void);
+void LCD_SoftPWMCtrlDeInit(void);
+void LCD_SoftPWMCtrlRun(void);
 void LCD_Light(uint32_t Brightness_Dis,uint32_t time);
 void LCD_ShowChar(uint16_t x,uint16_t y,uint8_t num,uint8_t size,uint8_t mode);
 void LCD_ShowString(uint16_t x,uint16_t y,uint16_t width,uint16_t height,uint8_t size,uint8_t *p);

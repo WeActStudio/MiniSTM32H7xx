@@ -4,7 +4,6 @@
 #include "main.h"
 #include "camera.h"
 
-
 int ov7725_init(void);
 
 #endif

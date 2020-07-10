@@ -18,7 +18,7 @@
           <Vendor>STMicroelectronics</Vendor>
           <PackID>Keil.STM32H7xx_DFP.2.5.0</PackID>
           <PackURL>https://www.keil.com/pack/</PackURL>
-          <Cpu>IRAM(0x20000000-0x2001FFFF) IRAM2(0x24000000-0x2407FFFF) IROM(0x8000000-0x801FFFF)   CLOCK(12000000) FPU3(DFPU) CPUTYPE("Cortex-M7") ELITTLE</Cpu>
+          <Cpu>IRAM(0x20000000-0x2001FFFF) IRAM2(0x24000000-0x2407FFFF) IROM(0x8000000-0x801FFFF)      CLOCK(12000000) FPU3(DFPU) CPUTYPE("Cortex-M7") ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
           <FlashDriverDll></FlashDriverDll>
@@ -326,7 +326,7 @@
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
-            <uGnu>0</uGnu>
+            <uGnu>1</uGnu>
             <useXO>0</useXO>
             <v6Lang>3</v6Lang>
             <v6LangP>3</v6LangP>
@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32H750xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;     ../Drivers/STM32H7xx_HAL_Driver/Inc;     ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy;     ../Drivers/CMSIS/Device/ST/STM32H7xx/Include;     ../Drivers/CMSIS/Include;     ..\Drivers\BSP\Camera;     ..\Drivers\BSP\ST7735</IncludePath>
+              <IncludePath>../Inc;            ../Drivers/STM32H7xx_HAL_Driver/Inc;            ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy;            ../Drivers/CMSIS/Device/ST/STM32H7xx/Include;            ../Drivers/CMSIS/Include;            ..\Drivers\BSP\Camera;            ..\Drivers\BSP\ST7735</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -602,6 +602,16 @@
               <FileName>ov7725.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\BSP\Camera\ov7725.c</FilePath>
+            </File>
+            <File>
+              <FileName>ov5640.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\Camera\ov5640.c</FilePath>
+            </File>
+            <File>
+              <FileName>ov5640_regs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\Camera\ov5640_regs.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -955,7 +965,7 @@
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
-            <uGnu>0</uGnu>
+            <uGnu>1</uGnu>
             <useXO>0</useXO>
             <v6Lang>3</v6Lang>
             <v6LangP>3</v6LangP>
@@ -1231,6 +1241,16 @@
               <FileName>ov7725.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\BSP\Camera\ov7725.c</FilePath>
+            </File>
+            <File>
+              <FileName>ov5640.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\Camera\ov5640.c</FilePath>
+            </File>
+            <File>
+              <FileName>ov5640_regs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\BSP\Camera\ov5640_regs.c</FilePath>
             </File>
           </Files>
         </Group>

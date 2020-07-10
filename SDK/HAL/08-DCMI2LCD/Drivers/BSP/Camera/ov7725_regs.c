@@ -13,7 +13,7 @@ const uint8_t ov7725_default_regs[][2] = {
     {HOUTSIZE,      0xa0},
     {VOUTSIZE,      0xf0},
     {EXHCH,         0x00},
-    {CLKRC,         0x83}, // {CLKRC, 0x01}, 24Mhz Input
+    {CLKRC,         0x81}, // {CLKRC, 0xc0}, 12Mhz Input / div 2 = 6Mhz
 
     {TGT_B,         0x7f},
     {FIXGAIN,       0x09},
@@ -25,7 +25,7 @@ const uint8_t ov7725_default_regs[][2] = {
 		
     {COM10,         COM10_VSYNC_NEG},
     {COM8,          0xf0},
-    {COM4,          0x41}, // {COM4, 0x41}, PLLx4
+    {COM4,          COM4_PLL_6x}, // 6Mhz x 6 = 36Mhz, Max FPS: 113FPS QQVGA
     {COM6,          0xc5},
     {COM9,          0x11},
     {BDBASE,        0x7f},

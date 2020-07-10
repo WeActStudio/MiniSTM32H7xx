@@ -3,8 +3,13 @@
 
 #include "main.h"
 
+#define XCLK_TIM       0
+#define XCLK_MCO       1
+
+#define OV7670_ADDRESS 0x42
 #define OV2640_ADDRESS 0x60
 #define OV7725_ADDRESS 0x42
+#define OV5640_ADDRESS 0x78
 
 #define Camera_OK 0
 #define camera_ERROR 1
@@ -70,6 +75,7 @@ typedef struct {
 	uint16_t manuf_id;
 	uint16_t device_id;
 	framesize_t framesize;
+	pixformat_t pixformat;
 } Camera_HandleTypeDef;
 
 extern Camera_HandleTypeDef hcamera;;
@@ -77,9 +83,12 @@ extern const uint16_t dvp_cam_resolution[][2];
 
 int32_t Camera_WriteReg(Camera_HandleTypeDef *hov, uint8_t regAddr, const uint8_t *pData);
 int32_t Camera_ReadReg(Camera_HandleTypeDef *hov, uint8_t regAddr, uint8_t *pData);
+int32_t Camera_WriteRegb2(Camera_HandleTypeDef *hov, uint16_t reg_addr, uint8_t reg_data);
+int32_t Camera_ReadRegb2(Camera_HandleTypeDef *hov, uint16_t reg_addr, uint8_t *reg_data);
 int32_t Camera_WriteRegList(Camera_HandleTypeDef *hov, const struct regval_t *reg_list);
 int32_t Camera_read_id(Camera_HandleTypeDef *hov);
 void Camera_Reset(Camera_HandleTypeDef *hov);
+void Camera_XCLK_Set(uint8_t xclktype);
 void Camera_Init_Device(I2C_HandleTypeDef *hi2c);
 
 #endif

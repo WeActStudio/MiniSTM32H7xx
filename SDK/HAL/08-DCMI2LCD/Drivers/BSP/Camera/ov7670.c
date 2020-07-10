@@ -311,7 +311,7 @@ int OV7670_Config(void)
 		return ov_write_reg_result;
 	}
 	
-	// configure PCLK to 24MHz, input clk 24MHz
+	// configure PCLK to 24MHz, input clk 12MHz
 
 	uint8_t ov_clk_rc = 0;
 	ov_read_reg_result = OV7670_ReadReg( REG_CLKRC, &ov_clk_rc);
@@ -319,7 +319,7 @@ int OV7670_Config(void)
 	{
 		return ov_read_reg_result;
 	}
-	ov_clk_rc = (ov_clk_rc & 0x80) | 0x00; // to enable prescaler by 0
+	ov_clk_rc = (ov_clk_rc & 0x80) | 0x01; // to enable prescaler by 2
 	ov_write_reg_result = OV7670_WriteReg( REG_CLKRC, &ov_clk_rc);
 	if (ov_write_reg_result != OV7670_OK)
 	{
@@ -332,19 +332,21 @@ int OV7670_Config(void)
 	{
 		return ov_read_reg_result;
 	}
-	ov_dblv = (ov_dblv & 0x3F) | DBLV_PLLOFF; // to enable PLL x0
+	ov_dblv = (ov_dblv & 0x3F) | DBLV_PLL4; // to enable PLL x4
 	ov_write_reg_result = OV7670_WriteReg( REG_DBLV, &ov_dblv);
 	if (ov_write_reg_result != OV7670_OK)
 	{
 		return ov_write_reg_result;
 	}
+	
 	HAL_Delay(100);
+	
 //	OV7670_Light_Mode(4);
 //	OV7670_Color_Saturation(2);
 //	OV7670_Brightness(2);
 //	OV7670_Contrast(2);
-	//OV7670_Special_Effects(0);
-	//ov7670_Window_Set(0,320,160,120);
+//	OV7670_Special_Effects(0);
+//	ov7670_Window_Set(0,320,160,120);
 	
 	return OV7670_OK;
 }
