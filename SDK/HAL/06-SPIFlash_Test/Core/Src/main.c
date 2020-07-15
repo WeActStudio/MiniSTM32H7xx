@@ -68,63 +68,35 @@ static void MPU_Config(void)
   /* Disables the MPU */
   HAL_MPU_Disable();
 	
-	/* Configure the MPU attributes as SO for whole 2MB of Flash memory */
+	/* Configure the MPU attributes for the QSPI 256MB without instruction access */
   MPU_InitStruct.Enable           = MPU_REGION_ENABLE;
-  MPU_InitStruct.BaseAddress      = FLASH_BASE;
-  MPU_InitStruct.Size             = MPU_REGION_SIZE_2MB;
+  MPU_InitStruct.Number           = MPU_REGION_NUMBER0;
+  MPU_InitStruct.BaseAddress      = QSPI_BASE;
+  MPU_InitStruct.Size             = MPU_REGION_SIZE_256MB;
   MPU_InitStruct.AccessPermission = MPU_REGION_NO_ACCESS;
   MPU_InitStruct.IsBufferable     = MPU_ACCESS_NOT_BUFFERABLE;
   MPU_InitStruct.IsCacheable      = MPU_ACCESS_NOT_CACHEABLE;
   MPU_InitStruct.IsShareable      = MPU_ACCESS_NOT_SHAREABLE;
-  MPU_InitStruct.Number           = MPU_REGION_NUMBER0;
-  MPU_InitStruct.TypeExtField     = MPU_TEX_LEVEL0;
-  MPU_InitStruct.SubRegionDisable = 0x00;
   MPU_InitStruct.DisableExec      = MPU_INSTRUCTION_ACCESS_DISABLE;
+  MPU_InitStruct.TypeExtField     = MPU_TEX_LEVEL1;
+  MPU_InitStruct.SubRegionDisable = 0x00;
   HAL_MPU_ConfigRegion(&MPU_InitStruct);
 	
-	/* Configure the MPU attributes as WB for implemented Flash memory */
+  /* Configure the MPU attributes for the QSPI 8MB (QSPI Flash Size) to Cacheable WT */
   MPU_InitStruct.Enable           = MPU_REGION_ENABLE;
-  MPU_InitStruct.BaseAddress      = FLASH_BASE;
-  MPU_InitStruct.Size             = MPU_REGION_SIZE_128KB;
-  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
+  MPU_InitStruct.Number           = MPU_REGION_NUMBER1;
+  MPU_InitStruct.BaseAddress      = QSPI_BASE;
+  MPU_InitStruct.Size             = MPU_REGION_SIZE_8MB;
+  MPU_InitStruct.AccessPermission = MPU_REGION_PRIV_RO;
   MPU_InitStruct.IsBufferable     = MPU_ACCESS_BUFFERABLE;
   MPU_InitStruct.IsCacheable      = MPU_ACCESS_CACHEABLE;
   MPU_InitStruct.IsShareable      = MPU_ACCESS_NOT_SHAREABLE;
-  MPU_InitStruct.Number           = MPU_REGION_NUMBER1;
-  MPU_InitStruct.TypeExtField     = MPU_TEX_LEVEL0;
-  MPU_InitStruct.SubRegionDisable = 0x00;
   MPU_InitStruct.DisableExec      = MPU_INSTRUCTION_ACCESS_ENABLE;
-  HAL_MPU_ConfigRegion(&MPU_InitStruct);
-	
-	/* Configure the MPU attributes for the QSPI 16MB to Cacheable WT */
-  MPU_InitStruct.Enable           = MPU_REGION_ENABLE;
-  MPU_InitStruct.BaseAddress      = QSPI_BASE;
-  MPU_InitStruct.Size             = MPU_REGION_SIZE_16MB;
-  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
-  MPU_InitStruct.IsBufferable     = MPU_ACCESS_NOT_BUFFERABLE;
-  MPU_InitStruct.IsCacheable      = MPU_ACCESS_CACHEABLE;
-  MPU_InitStruct.IsShareable      = MPU_ACCESS_NOT_SHAREABLE;
-  MPU_InitStruct.Number           = MPU_REGION_NUMBER2;
-  MPU_InitStruct.TypeExtField     = MPU_TEX_LEVEL0;
+  MPU_InitStruct.TypeExtField     = MPU_TEX_LEVEL1;
   MPU_InitStruct.SubRegionDisable = 0x00;
-  MPU_InitStruct.DisableExec      = MPU_INSTRUCTION_ACCESS_DISABLE;
   HAL_MPU_ConfigRegion(&MPU_InitStruct);
 	
-  /* Configure the MPU attributes for the QSPI 2MB to Cacheable WT with instruction access */
-  MPU_InitStruct.Enable           = MPU_REGION_ENABLE;
-  MPU_InitStruct.BaseAddress      = QSPI_BASE;
-  MPU_InitStruct.Size             = MPU_REGION_SIZE_2MB;
-  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
-  MPU_InitStruct.IsBufferable     = MPU_ACCESS_NOT_BUFFERABLE;
-  MPU_InitStruct.IsCacheable      = MPU_ACCESS_CACHEABLE;
-  MPU_InitStruct.IsShareable      = MPU_ACCESS_NOT_SHAREABLE;
-  MPU_InitStruct.Number           = MPU_REGION_NUMBER3;
-  MPU_InitStruct.TypeExtField     = MPU_TEX_LEVEL0;
-  MPU_InitStruct.SubRegionDisable = 0x00;
-  MPU_InitStruct.DisableExec      = MPU_INSTRUCTION_ACCESS_ENABLE;
-  HAL_MPU_ConfigRegion(&MPU_InitStruct);
-	
-	/* Setup AXI SRAM, SRAM1 and SRAM2 in Write-through */
+	/* Setup AXI SRAM in Cacheable WB */
   MPU_InitStruct.Enable           = MPU_REGION_ENABLE;
   MPU_InitStruct.BaseAddress      = D1_AXISRAM_BASE;
   MPU_InitStruct.Size             = MPU_REGION_SIZE_512KB;
@@ -132,50 +104,8 @@ static void MPU_Config(void)
   MPU_InitStruct.IsBufferable     = MPU_ACCESS_BUFFERABLE;
   MPU_InitStruct.IsCacheable      = MPU_ACCESS_CACHEABLE;
   MPU_InitStruct.IsShareable      = MPU_ACCESS_SHAREABLE;
-  MPU_InitStruct.Number           = MPU_REGION_NUMBER4;
-  MPU_InitStruct.TypeExtField     = MPU_TEX_LEVEL0;
-  MPU_InitStruct.SubRegionDisable = 0x00;
-  MPU_InitStruct.DisableExec      = MPU_INSTRUCTION_ACCESS_ENABLE;
-  HAL_MPU_ConfigRegion(&MPU_InitStruct);
-	
-	/* Setup D2 SRAM1 & SRAM2 in Write-through */
-  MPU_InitStruct.Enable           = MPU_REGION_ENABLE;
-  MPU_InitStruct.BaseAddress      = D2_AXISRAM_BASE;
-  MPU_InitStruct.Size             = MPU_REGION_SIZE_256KB;
-  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
-  MPU_InitStruct.IsBufferable     = MPU_ACCESS_BUFFERABLE;
-  MPU_InitStruct.IsCacheable      = MPU_ACCESS_CACHEABLE;
-  MPU_InitStruct.IsShareable      = MPU_ACCESS_SHAREABLE;
-  MPU_InitStruct.Number           = MPU_REGION_NUMBER5;
-  MPU_InitStruct.TypeExtField     = MPU_TEX_LEVEL0;
-  MPU_InitStruct.SubRegionDisable = 0x00;
-  MPU_InitStruct.DisableExec      = MPU_INSTRUCTION_ACCESS_ENABLE;
-  HAL_MPU_ConfigRegion(&MPU_InitStruct);
-	
-	/* Setup D3 SRAM Write-through */
-  MPU_InitStruct.Enable           = MPU_REGION_ENABLE;
-  MPU_InitStruct.BaseAddress      = D3_SRAM_BASE;
-  MPU_InitStruct.Size             = MPU_REGION_SIZE_64KB;
-  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
-  MPU_InitStruct.IsBufferable     = MPU_ACCESS_BUFFERABLE;
-  MPU_InitStruct.IsCacheable      = MPU_ACCESS_CACHEABLE;
-  MPU_InitStruct.IsShareable      = MPU_ACCESS_SHAREABLE;
-  MPU_InitStruct.Number           = MPU_REGION_NUMBER6;
-  MPU_InitStruct.TypeExtField     = MPU_TEX_LEVEL0;
-  MPU_InitStruct.SubRegionDisable = 0x00;
-  MPU_InitStruct.DisableExec      = MPU_INSTRUCTION_ACCESS_ENABLE;
-  HAL_MPU_ConfigRegion(&MPU_InitStruct);
-	
-	/* Setup D1 DTCMRAM Write-through */
-  MPU_InitStruct.Enable           = MPU_REGION_ENABLE;
-  MPU_InitStruct.BaseAddress      = D1_DTCMRAM_BASE;
-  MPU_InitStruct.Size             = MPU_REGION_SIZE_128KB;
-  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
-  MPU_InitStruct.IsBufferable     = MPU_ACCESS_BUFFERABLE;
-  MPU_InitStruct.IsCacheable      = MPU_ACCESS_CACHEABLE;
-  MPU_InitStruct.IsShareable      = MPU_ACCESS_SHAREABLE;
-  MPU_InitStruct.Number           = MPU_REGION_NUMBER7;
-  MPU_InitStruct.TypeExtField     = MPU_TEX_LEVEL0;
+  MPU_InitStruct.Number           = MPU_REGION_NUMBER2;
+  MPU_InitStruct.TypeExtField     = MPU_TEX_LEVEL1;
   MPU_InitStruct.SubRegionDisable = 0x00;
   MPU_InitStruct.DisableExec      = MPU_INSTRUCTION_ACCESS_ENABLE;
   HAL_MPU_ConfigRegion(&MPU_InitStruct);

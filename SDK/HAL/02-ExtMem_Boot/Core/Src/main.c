@@ -34,7 +34,7 @@
 
 #define W25Qxx_TEST              (0)
 #define APPLICATION_ADDRESS      QSPI_BASE
-
+#define ISP_ADDRESS              (0x1FF09800UL)
 typedef  void (*pFunction)(void);
 /* USER CODE END PTD */
 
@@ -153,12 +153,38 @@ int main(void)
 	w25qxx_Startup(w25qxx_DTRMode);
 	
 #if W25Qxx_TEST == (0)
+  /* Reset MCU && Long Press K1 to Enter ISP Mode */
+	if(HAL_GPIO_ReadPin(K1_GPIO_Port,K1_Pin) == GPIO_PIN_SET)
+	{
+		HAL_Delay(50);
+		while(HAL_GPIO_ReadPin(K1_GPIO_Port,K1_Pin) == GPIO_PIN_SET)
+		{
+			HAL_GPIO_TogglePin(PE3_GPIO_Port,PE3_Pin);
+			HAL_Delay(80);
+		}
+		HAL_QSPI_DeInit(&hqspi);
+		HAL_GPIO_DeInit(GPIOA,GPIO_PIN_All);
+		HAL_GPIO_DeInit(GPIOB,GPIO_PIN_All);
+		HAL_GPIO_DeInit(GPIOC,GPIO_PIN_All);
+		HAL_GPIO_DeInit(GPIOD,GPIO_PIN_All);
+		HAL_GPIO_DeInit(GPIOE,GPIO_PIN_All);
+		
+		/* Disable CPU L1 cache before jumping to the QSPI code execution */
+		CPU_CACHE_Disable();
+		/* Disable Systick interrupt */
+		SysTick->CTRL = 0;
+		
+		/* Initialize ISP application's Stack Pointer & Jump to ISP application */
+		app_Jump(ISP_ADDRESS);
+	}
+	
   if(app_IsReady(APPLICATION_ADDRESS) == SUCCESS)
 	{
 		/* Disable CPU L1 cache before jumping to the QSPI code execution */
 		CPU_CACHE_Disable();
 		/* Disable Systick interrupt */
 		SysTick->CTRL = 0;
+
 		/* Initialize user application's Stack Pointer & Jump to user application */
 		app_Jump(APPLICATION_ADDRESS);
 	}
