@@ -18,7 +18,7 @@
 
 // OpenMV Run in QSPI Flash
 // if not define this run in Internal Flash
-//#define OMV_RUN_QSPI
+#define OMV_RUN_QSPI
 
 // Flash sectors for the bootloader.
 // Flash FS sector, main FW sector, max sector.
@@ -111,17 +111,18 @@
 
 // HSE/HSI/CSI State
 #define OMV_OSC_HSE_STATE       (RCC_HSE_ON)
-#define OMV_OSC_HSI_STATE       (RCC_HSI_ON)
+#define OMV_OSC_HSI_STATE       (RCC_HSI_OFF)
 #define OMV_OSC_CSI_STATE       (RCC_CSI_OFF)
 
 // Flash Latency
-#define OMV_FLASH_LATENCY       (FLASH_LATENCY_4)
+#define OMV_FLASH_LATENCY       (FLASH_LATENCY_2)
 
 // Linker script constants (see the linker script template stm32fxxx.ld.S).
 // Note: fb_alloc is a stack-based, dynamically allocated memory on FB.
 // The maximum available fb_alloc memory = FB_ALLOC_SIZE + FB_SIZE - (w*h*bpp).
 #define OMV_FFS_MEMORY          CCM         // Flash filesystem cache memory
 #define OMV_MAIN_MEMORY         SRAM1       // data, bss, stack and heap
+#define OMV_STACK_MEMORY        SRAM1       // stack memory
 #define OMV_DMA_MEMORY          AXI_SRAM    // DMA buffers memory.
 #define OMV_FB_MEMORY           AXI_SRAM    // Framebuffer, fb_alloc
 #define OMV_JPEG_MEMORY         SRAM3       // JPEG buffer memory.
