@@ -1,4 +1,4 @@
-/* USER CODE BEGIN Header */
+  /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
   * @file           : main.c
@@ -186,14 +186,14 @@ int main(void)
     /* USER CODE BEGIN 3 */
 		RTC_CalendarShow(&sdatestructureget,&stimestructureget);
 		
-		if(stimestructureget.Seconds % 2 == 1)
-				sprintf((char *)&text,"WeAct Studio %02d:%02d",stimestructureget.Hours,stimestructureget.Minutes);
-			else
-				sprintf((char *)&text,"WeAct Studio %02d %02d",stimestructureget.Hours,stimestructureget.Minutes);
-		LCD_ShowString(4,4,160,16,16,text);
-			
+		if (stimestructureget.Seconds % 2 == 1)
+			sprintf((char *)&text,"Time: %02d:%02d", stimestructureget.Hours, stimestructureget.Minutes);
+		else
+			sprintf((char *)&text,"Time: %02d %02d", stimestructureget.Hours, stimestructureget.Minutes);
+		LCD_ShowString(4, 58, 160, 16, 16, text);
+		
 		sprintf((char *)&text,"Tick: %d ms",HAL_GetTick());
-		LCD_ShowString(4,58,160,16,16,text);
+		LCD_ShowString(4, 74, 160, 16, 16,text);
 		
 		LED_Blink(3,500);
 		

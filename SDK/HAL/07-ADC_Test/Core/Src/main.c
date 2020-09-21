@@ -211,10 +211,21 @@ int main(void)
 		vbat       = uhADCxInputVoltage[3] * 4; 
 		
 		uint8_t text[20];
-		sprintf((char *)&text," PC2: %4dmV Vref: %4dmV",adc3_inp0,vrefint);
-		LCD_ShowString(0,46,160,16,12,text);
-		sprintf((char *)&text,"temp: %3d 'C vbat: %4dmV",tempsensor,vbat);
-		LCD_ShowString(0,62,160,16,12,text);
+		#ifdef TFT96
+		sprintf((char *)&text, " PC2: %4dmV Vref: %4dmV", adc3_inp0, vrefint);
+		LCD_ShowString(0, 46, ST7735Ctx.Width, 16, 12, text);
+		sprintf((char *)&text, "temp: %3d 'C vbat: %4dmV", tempsensor, vbat);
+		LCD_ShowString(0, 62, ST7735Ctx.Width,16,12,text);
+		#elif TFT18
+		sprintf((char *)&text, " PC2: %4dmV", adc3_inp0);
+		LCD_ShowString(0, 46, ST7735Ctx.Width, 16, 12, text);
+		sprintf((char *)&text, " Vref: %4dmV", vrefint);
+		LCD_ShowString(0, 62, ST7735Ctx.Width, 16, 12, text);
+		sprintf((char *)&text, " temp: %3d 'C", tempsensor);
+		LCD_ShowString(0, 78, ST7735Ctx.Width, 16, 12, text);
+		sprintf((char *)&text, " vbat: %4dmV", vbat);
+		LCD_ShowString(0, 94, ST7735Ctx.Width, 16, 12, text);
+		#endif
 		
 		LED_Blink(3);
   }

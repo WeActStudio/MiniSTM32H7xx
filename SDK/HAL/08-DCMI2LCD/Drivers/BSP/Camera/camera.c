@@ -230,7 +230,7 @@ void Camera_XCLK_Set(uint8_t xclktype)
 	}
 }
 
-void Camera_Init_Device(I2C_HandleTypeDef *hi2c)
+void Camera_Init_Device(I2C_HandleTypeDef *hi2c, framesize_t framesize)
 {
 	hcamera.hi2c = hi2c;
 	hcamera.addr = OV7670_ADDRESS;
@@ -248,7 +248,7 @@ void Camera_Init_Device(I2C_HandleTypeDef *hi2c)
 			// ov2640 当使用高帧率寄存器配置 XCLK时钟采用MCO1输出可能存在异常(花屏)，可以使用TIM1 Channel 1 PWM模式 产生12Mhz方波时钟
 			// 但是使用TIM1输出XCLK时钟后与LCD的背光PWM冲突，故该函数自动设置LCD使用软件PWM控制
 			// Camera_XCLK_Set(XCLK_TIM);
-			ov2640_init();
+			ov2640_init(framesize);
 		}
 		else
 		{
@@ -259,7 +259,7 @@ void Camera_Init_Device(I2C_HandleTypeDef *hi2c)
 				// ov7725 当使用高帧率寄存器配置 XCLK时钟采用MCO1输出可能存在异常(花屏)，可以使用TIM1 Channel 1 PWM模式 产生12Mhz方波时钟
 				// 但是使用TIM1输出XCLK时钟后与LCD的背光PWM冲突，故该函数自动设置LCD使用软件PWM控制
 				// Camera_XCLK_Set(XCLK_TIM);
-				ov7725_init();
+				ov7725_init(framesize);
 			}
 			else
 			{
@@ -269,7 +269,7 @@ void Camera_Init_Device(I2C_HandleTypeDef *hi2c)
 				if (hcamera.device_id == 0x5640)
 				{
 					// 自动对焦 AF 未实现
-					ov5640_init();
+					ov5640_init(framesize);
 				}
 				else
 				{

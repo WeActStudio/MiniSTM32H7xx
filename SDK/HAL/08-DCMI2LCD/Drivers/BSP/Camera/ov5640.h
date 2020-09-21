@@ -4,6 +4,6 @@
 #include "main.h"
 #include "camera.h"
 
-int ov5640_init(void);
+int ov5640_init(framesize_t framesize);
 
 #endif

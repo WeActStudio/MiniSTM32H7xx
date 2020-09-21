@@ -25,7 +25,7 @@ const uint8_t ov7725_default_regs[][2] = {
 		
     {COM10,         COM10_VSYNC_NEG},
     {COM8,          0xf0},
-    {COM4,          COM4_PLL_6x}, // 6Mhz x 6 = 36Mhz, Max FPS: 113FPS QQVGA
+    {COM4,          COM4_PLL_4x}, // 6Mhz x 6 = 36Mhz, Max FPS: 113FPS QQVGA
     {COM6,          0xc5},
     {COM9,          0x11},
     {BDBASE,        0x7f},

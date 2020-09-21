@@ -66,6 +66,7 @@ typedef struct {
 	uint16_t manuf_id;
 	uint16_t device_id;
 	framesize_t framesize;
+	pixformat_t pixformat;
 } Camera_HandleTypeDef;
 
 extern Camera_HandleTypeDef hcamera;;
@@ -76,7 +77,7 @@ int32_t Camera_ReadReg(Camera_HandleTypeDef *hov, uint8_t regAddr, uint8_t *pDat
 int32_t Camera_WriteRegList(Camera_HandleTypeDef *hov, const struct regval_t *reg_list);
 int32_t Camera_read_id(Camera_HandleTypeDef *hov);
 void Camera_Reset(Camera_HandleTypeDef *hov);
-void Camera_Init_Device(I2C_HandleTypeDef *hi2c);
+void Camera_Init_Device(I2C_HandleTypeDef *hi2c, framesize_t framesize);
 
 #endif
 

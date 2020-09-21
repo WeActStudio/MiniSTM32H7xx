@@ -187,13 +187,13 @@ int main(void)
 		while(hUsbDeviceFS.dev_state != USBD_STATE_CONFIGURED)
 		{
 			sprintf((char *)&text,"USB Unconnect %d    ",HAL_GetTick());
-		  LCD_ShowString(0,58,160,16,16,text);
+		  LCD_ShowString(0,58,ST7735Ctx.Width,16,12,text);
 			LED_Blink(5);
 		}
 		while(1)
 		{ 
 			sprintf((char *)&text,"USB Connect %d      ",HAL_GetTick());
-		  LCD_ShowString(0,58,160,16,16,text);
+		  LCD_ShowString(0,58,ST7735Ctx.Width,16,12,text);
 			LED_Blink(5);
 		}
 		

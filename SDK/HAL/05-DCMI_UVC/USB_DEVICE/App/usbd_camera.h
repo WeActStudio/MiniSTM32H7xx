@@ -8,11 +8,12 @@
 
 #include "main.h"
 #include "usbd_uvc.h"
+#include "camera.h"
 //#include "ov7670.h"
 
 extern USBD_UVC_CameraTypeDef USBD_Camera;
 
-void Camera_Init(I2C_HandleTypeDef *hi2c);
+void Camera_Init(I2C_HandleTypeDef *hi2c, framesize_t framesize);
 void Camera_Loop(void);
 
 #define CAMERA_BUFFER_STATE_FREE 1
