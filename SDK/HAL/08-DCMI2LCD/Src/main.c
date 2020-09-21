@@ -56,7 +56,17 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-uint16_t pic[120][160];
+#ifdef TFT96
+// QQVGA
+#define FrameWidth 160
+#define FrameHeight 120
+#elif TFT18
+// QQVGA2
+#define FrameWidth 128
+#define FrameHeight 160
+#endif
+// picture buffer
+uint16_t pic[FrameWidth][FrameHeight];
 uint32_t DCMI_FrameIsReady;
 uint32_t Camera_FPS=0;
 /* USER CODE END PFP */
@@ -180,27 +190,33 @@ int main(void)
   LCD_Test();
 
   sprintf((char *)&text, "Camera Not Found");
-  LCD_ShowString(0, 58, 160, 16, 16, text);
+  LCD_ShowString(0, 58, ST7735Ctx.Width, 16, 16, text);
 
   //	HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
   //	HAL_Delay(10);
-  Camera_Init_Device(&hi2c1);
-
+  #ifdef TFT96
+	Camera_Init_Device(&hi2c1, FRAMESIZE_QQVGA);
+	#elif TFT18
+	Camera_Init_Device(&hi2c1, FRAMESIZE_QQVGA2);
+	#endif
+	//clean Ypos 58
+	ST7735_LCD_Driver.FillRect(&st7735_pObj, 0, 58, ST7735Ctx.Width, 16, BLACK);
+	
   while (HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_Pin) == GPIO_PIN_RESET)
   {
 
-    sprintf((char *)&text, "Camera id: 0x%x   ", hcamera.device_id);
-    LCD_ShowString(0, 58, 160, 16, 16, text);
+    sprintf((char *)&text, "Camera id:0x%x   ", hcamera.device_id);
+    LCD_ShowString(0, 58, ST7735Ctx.Width, 16, 12, text);
 
     LED_Blink(5, 500);
 
     sprintf((char *)&text, "LongPress K1 to Run");
-    LCD_ShowString(0, 58, 160, 16, 16, text);
+    LCD_ShowString(0, 58, ST7735Ctx.Width, 16, 12, text);
 
     LED_Blink(5, 500);
   }
 
-  HAL_DCMI_Start_DMA(&hdcmi, DCMI_MODE_CONTINUOUS, (uint32_t)&pic, 160 * 120 * 2 / 4);
+  HAL_DCMI_Start_DMA(&hdcmi, DCMI_MODE_CONTINUOUS, (uint32_t)&pic, FrameWidth * FrameHeight * 2 / 4);
 
   /* USER CODE END 2 */
 
@@ -214,8 +230,12 @@ int main(void)
     if (DCMI_FrameIsReady)
     {
       DCMI_FrameIsReady = 0;
-      ST7735_FillRGBRect(&st7735_pObj, 0, 0, (uint8_t *)&pic[20][0], 160, 80);
-      
+			
+      #ifdef TFT96
+			ST7735_FillRGBRect(&st7735_pObj,0,0,(uint8_t *)&pic[20][0], ST7735Ctx.Width, 80);
+			#elif TFT18
+			ST7735_FillRGBRect(&st7735_pObj,0,0,(uint8_t *)&pic[0][0], ST7735Ctx.Width, ST7735Ctx.Height);
+			#endif
 			sprintf((char *)&text,"%dFPS",Camera_FPS);
 			LCD_ShowString(5,5,60,16,12,text);
 			

@@ -172,7 +172,7 @@ int main(void)
   MX_I2C1_Init();
   MX_USB_OTG_FS_PCD_Init();
   /* USER CODE BEGIN 2 */
-	Camera_Init(&hi2c1);
+	Camera_Init(&hi2c1, FRAMESIZE_QQVGA);
   USB_DEVICE_Init();
 	camera = (USBD_UVC_CameraTypeDef*) hUsbDeviceFS.pUserData;
   /* USER CODE END 2 */

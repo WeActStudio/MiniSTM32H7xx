@@ -283,7 +283,8 @@
 #define UXGA_HSIZE                  (1600)
 #define UXGA_VSIZE                  (1200)
 
-extern const uint8_t OV2640_default_regs[][2];
+extern const uint8_t OV2640_Fast_regs[][2];
+extern const uint8_t ov2640_Slow_regs[][2];
 extern const uint8_t ov2640_reg_tables[][2];
 
 extern const uint8_t OV2640_svga_regs[][2];

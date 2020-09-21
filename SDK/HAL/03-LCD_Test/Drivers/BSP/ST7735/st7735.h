@@ -73,18 +73,35 @@ typedef struct
   st7735_ctx_t        Ctx;   
   uint8_t             IsInitialized;
 } ST7735_Object_t;
+/** @addtogroup ST7735
+  * @brief      This file provides a set of functions needed to drive the
+  *             ST7735 LCD.
+  * @{
+  */
+
+/** @defgroup ST7735_Private_Types Private Types
+  * @{
+  */
+typedef struct
+{
+  uint32_t        Width;
+  uint32_t        Height;
+  uint32_t        Orientation;
+	uint8_t 				Panel;
+	uint8_t					Type;
+} ST7735_Ctx_t;
 
 typedef struct
 {
   /* Control functions */
-  int32_t (*Init             )(ST7735_Object_t*, uint32_t, uint32_t);
+  int32_t (*Init             )(ST7735_Object_t*, uint32_t, ST7735_Ctx_t*);
   int32_t (*DeInit           )(ST7735_Object_t*);
   int32_t (*ReadID           )(ST7735_Object_t*, uint32_t*);
   int32_t (*DisplayOn        )(ST7735_Object_t*);
   int32_t (*DisplayOff       )(ST7735_Object_t*);
   int32_t (*SetBrightness    )(ST7735_Object_t*, uint32_t); 
   int32_t (*GetBrightness    )(ST7735_Object_t*, uint32_t*);   
-  int32_t (*SetOrientation   )(ST7735_Object_t*, uint32_t);
+  int32_t (*SetOrientation   )(ST7735_Object_t*, ST7735_Ctx_t*);
   int32_t (*GetOrientation   )(ST7735_Object_t*, uint32_t*);
 
   /* Drawing functions*/
@@ -121,11 +138,15 @@ typedef struct
 #define  ST7735_ID              0x5CU
   
 /** 
-  * @brief  ST7735 Size  
+  * @brief  ST7735 1.8 inch Size  
   */  
-#define  ST7735_WIDTH           80U
-#define  ST7735_HEIGHT          160U
-
+#define  ST7735_1_8_WIDTH           128U
+#define  ST7735_1_8_HEIGHT          160U
+/** 
+  * @brief  ST7735 0.9 inch Size  
+  */  
+#define  ST7735_0_9_WIDTH           80U
+#define  ST7735_0_9_HEIGHT          160U
 /**
  *  @brief LCD_OrientationTypeDef
  *  Possible values of Display Orientation
@@ -142,6 +163,24 @@ typedef struct
 #define ST7735_FORMAT_RBG565                0x05U /* Pixel format chosen is RGB565 : 16 bpp */
 #define ST7735_FORMAT_RBG666                0x06U /* Pixel format chosen is RGB666 : 18 bpp */
 #define ST7735_FORMAT_DEFAULT               ST7735_FORMAT_RBG565
+
+/**
+ *  @brief  LCD_Type_Define
+ */
+#define ST7735_1_8_inch_screen							0x00U
+#define ST7735_0_9_inch_screen							0x01U 
+
+/**
+ *  @brief  LCD_Panel
+ */
+#define HannStar_Panel											0x00U
+#define BOE_Panel														0x01U
+
+/**
+ *  @brief  LCD RGB or BGR
+ */
+#define LCD_RGB														0x00U
+#define LCD_BGR														0x08U
 /**
   * @}
   */
@@ -150,14 +189,14 @@ typedef struct
   * @{
   */ 
 int32_t ST7735_RegisterBusIO (ST7735_Object_t *pObj, ST7735_IO_t *pIO);
-int32_t ST7735_Init(ST7735_Object_t *pObj, uint32_t ColorCoding, uint32_t Orientation);
+int32_t ST7735_Init(ST7735_Object_t *pObj, uint32_t ColorCoding, ST7735_Ctx_t *ST7735_driver);
 int32_t ST7735_DeInit(ST7735_Object_t *pObj);
 int32_t ST7735_ReadID(ST7735_Object_t *pObj, uint32_t *Id);
 int32_t ST7735_DisplayOn(ST7735_Object_t *pObj);
 int32_t ST7735_DisplayOff(ST7735_Object_t *pObj);
 int32_t ST7735_SetBrightness(ST7735_Object_t *pObj, uint32_t Brightness);
 int32_t ST7735_GetBrightness(ST7735_Object_t *pObj, uint32_t *Brightness);
-int32_t ST7735_SetOrientation(ST7735_Object_t *pObj, uint32_t Orientation);
+int32_t ST7735_SetOrientation(ST7735_Object_t *pObj, ST7735_Ctx_t *pDriver);
 int32_t ST7735_GetOrientation(ST7735_Object_t *pObj, uint32_t *Orientation);
 
 int32_t ST7735_SetCursor(ST7735_Object_t *pObj, uint32_t Xpos, uint32_t Ypos);

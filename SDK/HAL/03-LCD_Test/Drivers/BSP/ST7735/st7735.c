@@ -21,8 +21,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "st7735.h"
 
-#define IS_BOE_PANEL    (0)
-
 /** @addtogroup BSP
   * @{
   */
@@ -31,21 +29,7 @@
   * @{
   */
 
-/** @addtogroup ST7735
-  * @brief      This file provides a set of functions needed to drive the
-  *             ST7735 LCD.
-  * @{
-  */
 
-/** @defgroup ST7735_Private_Types Private Types
-  * @{
-  */
-typedef struct
-{
-  uint32_t        Width;
-  uint32_t        Height;
-  uint32_t        Orientation;
-} ST7735_Ctx_t;
 /**
   * @}
   */
@@ -81,13 +65,13 @@ ST7735_LCD_Drv_t   ST7735_LCD_Driver =
 */
 static uint32_t OrientationTab[4][2] =
 {
-  {0x48U , 0xC8U}, /* Portrait orientation choice of LCD screen               */
-  {0x88U , 0x08U}, /* Portrait rotated 180° orientation choice of LCD screen  */
-  {0x28U , 0x68U}, /* Landscape orientation choice of LCD screen              */
-  {0xE8U , 0xA8U}  /* Landscape rotated 180° orientation choice of LCD screen */
+  {0x40U , 0xC0U}, /* Portrait orientation choice of LCD screen               */
+  {0x80U , 0x00U}, /* Portrait rotated 180° orientation choice of LCD screen  */
+  {0x20U , 0x60U}, /* Landscape orientation choice of LCD screen              */
+  {0xE0U , 0xA0U}  /* Landscape rotated 180° orientation choice of LCD screen */
 };
 
-static ST7735_Ctx_t ST7735Ctx;
+ST7735_Ctx_t ST7735Ctx;
 /**
   * @}
   */
@@ -159,7 +143,7 @@ int32_t ST7735_RegisterBusIO (ST7735_Object_t *pObj, ST7735_IO_t *pIO)
   * @param  Orientation Display orientation
   * @retval Component status
   */
-int32_t ST7735_Init(ST7735_Object_t *pObj, uint32_t ColorCoding, uint32_t Orientation)
+int32_t ST7735_Init(ST7735_Object_t *pObj, uint32_t ColorCoding, ST7735_Ctx_t *pDriver)
 {
   uint8_t tmp;
   int32_t ret;
@@ -172,6 +156,10 @@ int32_t ST7735_Init(ST7735_Object_t *pObj, uint32_t ColorCoding, uint32_t Orient
   {
 		/* Out of sleep mode, 0 args, delay 120ms */
     tmp = 0x00U;
+    ret = st7735_write_reg(&pObj->Ctx, ST7735_SW_RESET, &tmp, 0);
+		(void)ST7735_IO_Delay(pObj, 120);
+		
+		tmp = 0x00U;
     ret = st7735_write_reg(&pObj->Ctx, ST7735_SW_RESET, &tmp, 0);
 		(void)ST7735_IO_Delay(pObj, 120);
 		
@@ -248,13 +236,12 @@ int32_t ST7735_Init(ST7735_Object_t *pObj, uint32_t ColorCoding, uint32_t Orient
     tmp = 0x0EU;
     ret += st7735_write_reg(&pObj->Ctx, ST7735_VCOMH_VCOML_CTRL1, &tmp, 1);
 
-#if IS_BOE_PANEL
-    /* Not Invert display, no args, no delay */
-    ret += st7735_write_reg(&pObj->Ctx, ST7735_DISPLAY_INVERSION_OFF, &tmp, 0);
-#else
-    /* Invert display, no args, no delay */
-    ret += st7735_write_reg(&pObj->Ctx, ST7735_DISPLAY_INVERSION_ON, &tmp, 0);
-#endif
+		/* choose panel*/
+		if (pDriver->Panel == HannStar_Panel) {
+			ret += st7735_write_reg(&pObj->Ctx, ST7735_DISPLAY_INVERSION_ON, &tmp, 0);
+		} else {
+			ret += st7735_write_reg(&pObj->Ctx, ST7735_DISPLAY_INVERSION_OFF, &tmp, 0);
+		}
     /* Set color mode, 1 arg, no delay */
     ret += st7735_write_reg(&pObj->Ctx, ST7735_COLOR_MODE, (uint8_t*)&ColorCoding, 1);
 
@@ -334,7 +321,7 @@ int32_t ST7735_Init(ST7735_Object_t *pObj, uint32_t ColorCoding, uint32_t Orient
     ret += st7735_write_reg(&pObj->Ctx, ST7735_DISPLAY_ON, &tmp, 1);
 
     /* Set the display Orientation and the default display window */
-    ret += ST7735_SetOrientation(pObj, Orientation);
+    ret += ST7735_SetOrientation(pObj, pDriver);
   }
 
   if(ret != ST7735_OK)
@@ -406,7 +393,9 @@ int32_t ST7735_DisplayOn(ST7735_Object_t *pObj)
   ret += st7735_write_reg(&pObj->Ctx, ST7735_DISPLAY_ON, &tmp, 0);
   (void)ST7735_IO_Delay(pObj, 10);
   ret += st7735_write_reg(&pObj->Ctx, ST7735_MADCTL, &tmp, 0);
-  tmp = (uint8_t)OrientationTab[ST7735Ctx.Orientation][1];
+	tmp = ST7735Ctx.Panel == HannStar_Panel ? 
+			(uint8_t)OrientationTab[ST7735Ctx.Orientation][1] | LCD_BGR :
+			(uint8_t)OrientationTab[ST7735Ctx.Orientation][1] | LCD_RGB;
   ret += st7735_send_data(&pObj->Ctx, &tmp, 1);
   if(ret != ST7735_OK)
   {
@@ -431,7 +420,9 @@ int32_t ST7735_DisplayOff(ST7735_Object_t *pObj)
   ret += st7735_write_reg(&pObj->Ctx, ST7735_DISPLAY_OFF, &tmp, 0);
   (void)ST7735_IO_Delay(pObj, 10);
   ret += st7735_write_reg(&pObj->Ctx, ST7735_MADCTL, &tmp, 0);
-  tmp = (uint8_t)OrientationTab[ST7735Ctx.Orientation][1];
+	tmp = ST7735Ctx.Panel == HannStar_Panel ? 
+		(uint8_t)OrientationTab[ST7735Ctx.Orientation][1] | LCD_BGR :
+		(uint8_t)OrientationTab[ST7735Ctx.Orientation][1] | LCD_RGB;
   ret += st7735_send_data(&pObj->Ctx, &tmp, 1);
   if(ret != ST7735_OK)
   {
@@ -478,26 +469,41 @@ int32_t ST7735_GetBrightness(ST7735_Object_t *pObj, uint32_t *Brightness)
   *                     ST7735_ORIENTATION_LANDSCAPE or ST7735_ORIENTATION_LANDSCAPE_ROT180
   * @retval The component status
   */
-int32_t ST7735_SetOrientation(ST7735_Object_t *pObj, uint32_t Orientation)
+int32_t ST7735_SetOrientation(ST7735_Object_t *pObj, ST7735_Ctx_t *pDriver)
 {
   int32_t ret;
   uint8_t tmp;
 
-  if((Orientation == ST7735_ORIENTATION_PORTRAIT) || (Orientation == ST7735_ORIENTATION_PORTRAIT_ROT180))
+  if((pDriver->Orientation == ST7735_ORIENTATION_PORTRAIT) || (pDriver->Orientation == ST7735_ORIENTATION_PORTRAIT_ROT180))
   {
-    ST7735Ctx.Width  = ST7735_WIDTH;
-    ST7735Ctx.Height = ST7735_HEIGHT;
+		if (pDriver->Type == ST7735_0_9_inch_screen) {
+			ST7735Ctx.Width  = ST7735_0_9_WIDTH;
+			ST7735Ctx.Height = ST7735_0_9_HEIGHT;
+		} else if (pDriver->Type == ST7735_1_8_inch_screen){
+			ST7735Ctx.Width  = ST7735_1_8_WIDTH;
+			ST7735Ctx.Height = ST7735_1_8_HEIGHT;
+		}
   }
   else
   {
-    ST7735Ctx.Width  = ST7735_HEIGHT;
-    ST7735Ctx.Height = ST7735_WIDTH;
+		if (pDriver->Type == ST7735_0_9_inch_screen) {
+			ST7735Ctx.Width  = ST7735_0_9_HEIGHT;
+			ST7735Ctx.Height = ST7735_0_9_WIDTH;
+		} else if (pDriver->Type == ST7735_1_8_inch_screen){
+			ST7735Ctx.Width  = ST7735_1_8_HEIGHT;
+			ST7735Ctx.Height = ST7735_1_8_WIDTH;
+		}
   }
-	ST7735Ctx.Orientation = Orientation;
+	
+	ST7735Ctx.Orientation = pDriver->Orientation;
+	ST7735Ctx.Panel = pDriver->Panel;
+	ST7735Ctx.Type = pDriver->Type;
 	
   ret = ST7735_SetDisplayWindow(pObj, 0U, 0U, ST7735Ctx.Width, ST7735Ctx.Height);
 
-  tmp = (uint8_t)OrientationTab[Orientation][1];
+	tmp = ST7735Ctx.Panel == HannStar_Panel ? 
+			(uint8_t)OrientationTab[ST7735Ctx.Orientation][1] | LCD_BGR :
+			(uint8_t)OrientationTab[ST7735Ctx.Orientation][1] | LCD_RGB;
   ret += st7735_write_reg(&pObj->Ctx, ST7735_MADCTL, &tmp, 1);
 
   
@@ -538,25 +544,26 @@ int32_t ST7735_SetCursor(ST7735_Object_t *pObj, uint32_t Xpos, uint32_t Ypos)
   uint8_t tmp;
 	
 	/* Cursor calibration */
-	if(ST7735Ctx.Orientation <= ST7735_ORIENTATION_PORTRAIT_ROT180)
-	{	
-#if IS_BOE_PANEL
-		Xpos += 24;
-		Ypos += 0;
-#else
-		Xpos += 26;
-		Ypos += 1;
-#endif
-	}
-	else
-	{
-#if IS_BOE_PANEL
-		Xpos += 0;
-		Ypos += 24;
-#else
-		Xpos += 1;
-		Ypos += 26;
-#endif
+	if(ST7735Ctx.Orientation <= ST7735_ORIENTATION_PORTRAIT_ROT180) {
+		if (ST7735Ctx.Type == ST7735_0_9_inch_screen) {		//0.96 ST7735
+			if (ST7735Ctx.Panel == HannStar_Panel) {
+				Xpos += 26;
+				Ypos += 1;
+			} else {		//BOE Panel
+				Xpos += 24;
+				Ypos += 0;
+			}
+		}
+	} else {
+		if (ST7735Ctx.Type == ST7735_0_9_inch_screen) {
+			if (ST7735Ctx.Panel == HannStar_Panel) {		//0.96 ST7735
+				Xpos += 1;
+				Ypos += 26;
+			} else {		//BOE Panel
+				Xpos += 0;
+				Ypos += 24;
+			}
+		}
 	}
 	
   ret = st7735_write_reg(&pObj->Ctx, ST7735_CASET, &tmp, 0);
@@ -622,7 +629,9 @@ int32_t ST7735_DrawBitmap(ST7735_Object_t *pObj, uint32_t Xpos, uint32_t Ypos, u
   else
   {
     /* Set GRAM write direction and BGR = 0 */
-    tmp = (uint8_t)OrientationTab[ST7735Ctx.Orientation][0];
+    tmp = ST7735Ctx.Panel == HannStar_Panel ? 
+					(uint8_t)OrientationTab[ST7735Ctx.Orientation][0] | LCD_BGR :
+					(uint8_t)OrientationTab[ST7735Ctx.Orientation][0] | LCD_RGB;
 
     if(st7735_write_reg(&pObj->Ctx, ST7735_MADCTL, &tmp, 1) != ST7735_OK)
     {
@@ -647,7 +656,9 @@ int32_t ST7735_DrawBitmap(ST7735_Object_t *pObj, uint32_t Xpos, uint32_t Ypos, u
         pbmp += 2;
       }while(counter < size);
 
-      tmp = (uint8_t)OrientationTab[ST7735Ctx.Orientation][1];
+			tmp = ST7735Ctx.Panel == HannStar_Panel ? 
+						(uint8_t)OrientationTab[ST7735Ctx.Orientation][1] | LCD_BGR :
+						(uint8_t)OrientationTab[ST7735Ctx.Orientation][1] | LCD_RGB;
       if(st7735_write_reg(&pObj->Ctx, ST7735_MADCTL, &tmp, 1) != ST7735_OK)
       {
         ret = ST7735_ERROR;
@@ -942,25 +953,26 @@ static int32_t ST7735_SetDisplayWindow(ST7735_Object_t *pObj, uint32_t Xpos, uin
   uint8_t tmp;
 
 	/* Cursor calibration */
-	if(ST7735Ctx.Orientation <= ST7735_ORIENTATION_PORTRAIT_ROT180)
-	{	
-#if IS_BOE_PANEL
-		Xpos += 24;
-		Ypos += 0;
-#else
-		Xpos += 26;
-		Ypos += 1;
-#endif
-	}
-	else
-	{
-#if IS_BOE_PANEL
-		Xpos += 0;
-		Ypos += 24;
-#else
-		Xpos += 1;
-		Ypos += 26;
-#endif
+	if(ST7735Ctx.Orientation <= ST7735_ORIENTATION_PORTRAIT_ROT180) {
+		if (ST7735Ctx.Type == ST7735_0_9_inch_screen) {		//0.96 ST7735
+			if (ST7735Ctx.Panel == HannStar_Panel) {
+				Xpos += 26;
+				Ypos += 1;
+			} else {		//BOE Panel
+				Xpos += 24;
+				Ypos += 0;
+			}
+		}
+	} else {
+		if (ST7735Ctx.Type == ST7735_0_9_inch_screen) {
+			if (ST7735Ctx.Panel == HannStar_Panel) {		//0.96 ST7735
+				Xpos += 1;
+				Ypos += 26;
+			} else {		//BOE Panel
+				Xpos += 0;
+				Ypos += 24;
+			}
+		}
 	}
 	
   /* Column addr set, 4 args, no delay: XSTART = Xpos, XEND = (Xpos + Width - 1) */

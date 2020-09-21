@@ -89,7 +89,7 @@ int32_t Camera_WriteRegList(Camera_HandleTypeDef *hov, const struct regval_t *re
 int32_t Camera_read_id(Camera_HandleTypeDef *hov);
 void Camera_Reset(Camera_HandleTypeDef *hov);
 void Camera_XCLK_Set(uint8_t xclktype);
-void Camera_Init_Device(I2C_HandleTypeDef *hi2c);
+void Camera_Init_Device(I2C_HandleTypeDef *hi2c, framesize_t framesize);
 
 #endif
 

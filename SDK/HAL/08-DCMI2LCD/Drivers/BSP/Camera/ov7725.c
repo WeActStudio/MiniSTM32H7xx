@@ -143,10 +143,10 @@ static int ov7725_set_vflip(int enable)
     return ret;
 }
 
-int ov7725_init(void)
+int ov7725_init(framesize_t framesize)
 {
 	ov7725_reset();
-	hcamera.framesize = FRAMESIZE_QQVGA;
+	hcamera.framesize = framesize;
 	hcamera.pixformat = PIXFORMAT_RGB565;
 	ov7725_set_pixformat(hcamera.pixformat);
 	ov7725_set_framesize(hcamera.framesize);

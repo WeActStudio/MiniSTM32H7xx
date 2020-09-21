@@ -4,6 +4,6 @@
 #include "main.h"
 #include "camera.h"
 
-int ov7725_init(void);
+int ov7725_init(framesize_t framesize);
 
 #endif

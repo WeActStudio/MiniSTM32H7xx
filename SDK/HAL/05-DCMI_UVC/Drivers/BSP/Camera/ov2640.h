@@ -5,6 +5,6 @@
 #include "camera.h"
 
 
-int ov2640_init(void);
+int ov2640_init(framesize_t framesize);
 
 #endif

@@ -1,6 +1,5 @@
 #include "usbd_camera.h"
 #include "dcmi.h"
-#include "camera.h"
 
 uint16_t pic[160][120];
 
@@ -23,9 +22,9 @@ void Camera_SignalError(void)
 {
 
 }
-void Camera_Init(I2C_HandleTypeDef *hi2c)
+void Camera_Init(I2C_HandleTypeDef *hi2c, framesize_t framesize)
 {
-  Camera_Init_Device(hi2c);
+  Camera_Init_Device(hi2c, framesize);
 }
 
 void Camera_Fill_Buffer(int bufferIndex)

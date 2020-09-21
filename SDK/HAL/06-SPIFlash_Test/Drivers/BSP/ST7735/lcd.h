@@ -27,5 +27,6 @@ void LCD_Test(void);
 void LCD_SetBrightness(uint32_t Brightness);
 void LCD_ShowChar(uint16_t x,uint16_t y,uint8_t num,uint8_t size,uint8_t mode);
 void LCD_ShowString(uint16_t x,uint16_t y,uint16_t width,uint16_t height,uint8_t size,uint8_t *p);
+extern ST7735_Ctx_t ST7735Ctx;
 
 #endif  

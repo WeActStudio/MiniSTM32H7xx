@@ -335,10 +335,10 @@ static int ov5640_set_vflip(int enable)
     return ret;
 }
 
-int ov5640_init(void)
+int ov5640_init(framesize_t framesize)
 {
     ov5640_reset();
-    hcamera.framesize = FRAMESIZE_QQVGA;
+    hcamera.framesize = framesize;
     hcamera.pixformat = PIXFORMAT_RGB565;
     ov5640_set_pixformat(hcamera.pixformat);
     ov5640_set_framesize(hcamera.framesize);
