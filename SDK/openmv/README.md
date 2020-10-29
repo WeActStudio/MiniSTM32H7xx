@@ -54,10 +54,13 @@ sudo apt-get install gcc-arm-none-eabi
 
 4. Bulid
 ```
-# Copy `Ports/omv/boards/WeActStudioSTM32H7xx` to `openmv/src/omv/boards/`
-# Copy `Ports/micropython/boards/WeActStudioSTM32H7xx` to `openmv/src/micropython/ports/stm32/boards/`
+# 1. Copy `Ports/omv/boards/WeActStudioSTM32H7xx` to `openmv/src/omv/boards/`
+# 2. Copy `Ports/micropython/boards/WeActStudioSTM32H7xx` to `openmv/src/micropython/ports/stm32/boards/`
+# 3. Copy `Ports/micropython/micropython-Add-WeAct-Studio-STM32H7xx-Support.patch` to `openmv/src/micropython/`
 # go to `openmv/src`
-cd micropython/mpy-cross
+cd micropython
+git am micropython-Add-WeAct-Studio-STM32H7xx-Support.patch
+cd mpy-cross
 make -j
 cd ../../
 make TARGET=WeActStudioSTM32H7xx -j

@@ -16,6 +16,9 @@
 #define OMV_BOARD_TYPE          "H7"
 #define OMV_UNIQUE_ID_ADDR      0x1FF1E800
 
+// Needed by the SWD JTAG testrig - located at the bottom of the frame buffer stack.
+#define OMV_SELF_TEST_SWD_ADDR  MAIN_FB()->bpp
+
 // OpenMV Run in QSPI Flash
 // if not define this run in Internal Flash
 #define OMV_RUN_QSPI
@@ -55,15 +58,21 @@
 // Enable hardware JPEG
 #define OMV_HARDWARE_JPEG       (1)
 
-// Enable MT9V034 and LEPTON sensors
-#define OMV_ENABLE_MT9V034      (1)
-//#define OMV_ENABLE_LEPTON       (1)
-
-// Enable OV7690
+// Enable sensor drivers
+#define OMV_ENABLE_OV2640       (1)
+#define OMV_ENABLE_OV5640       (1)
 #define OMV_ENABLE_OV7690       (1)
+#define OMV_ENABLE_OV7725       (1)
+#define OMV_ENABLE_OV9650       (1)
+#define OMV_ENABLE_MT9V034      (1)
+#define OMV_ENABLE_LEPTON       (0)
+#define OMV_ENABLE_HM01B0       (0)
 
 // Enable WiFi debug
 //#define OMV_ENABLE_WIFIDBG      (0)
+
+// Enable self-tests on first boot
+#define OMV_ENABLE_SELFTEST     (1)
 
 // If buffer size is bigger than this threshold, the quality is reduced.
 // This is only used for JPEG images sent to the IDE not normal compression.
@@ -109,10 +118,13 @@
 #define OMV_OSC_PLL3VCO         (RCC_PLL3VCOWIDE)
 #define OMV_OSC_PLL3FRAC        (0)
 
+// Clock Sources
+#define OMV_OSC_USB_CLKSOURCE       RCC_USBCLKSOURCE_PLL
+#define OMV_OSC_ADC_CLKSOURCE       RCC_ADCCLKSOURCE_PLL3
+#define OMV_OSC_SPI123_CLKSOURCE    RCC_SPI123CLKSOURCE_PLL3
+
 // HSE/HSI/CSI State
 #define OMV_OSC_HSE_STATE       (RCC_HSE_ON)
-#define OMV_OSC_HSI_STATE       (RCC_HSI_OFF)
-#define OMV_OSC_CSI_STATE       (RCC_CSI_OFF)
 
 // Flash Latency
 #define OMV_FLASH_LATENCY       (FLASH_LATENCY_2)
@@ -120,9 +132,9 @@
 // Linker script constants (see the linker script template stm32fxxx.ld.S).
 // Note: fb_alloc is a stack-based, dynamically allocated memory on FB.
 // The maximum available fb_alloc memory = FB_ALLOC_SIZE + FB_SIZE - (w*h*bpp).
-#define OMV_FFS_MEMORY          CCM         // Flash filesystem cache memory
-#define OMV_MAIN_MEMORY         SRAM1       // data, bss, stack and heap
-#define OMV_STACK_MEMORY        SRAM1       // stack memory
+#define OMV_FFS_MEMORY          DTCM        // Flash filesystem cache memory
+#define OMV_MAIN_MEMORY         SRAM1       // data, bss and heap memory
+#define OMV_STACK_MEMORY        ITCM        // stack memory
 #define OMV_DMA_MEMORY          AXI_SRAM    // DMA buffers memory.
 #define OMV_FB_MEMORY           AXI_SRAM    // Framebuffer, fb_alloc
 #define OMV_JPEG_MEMORY         SRAM3       // JPEG buffer memory.
@@ -130,8 +142,8 @@
 
 #define OMV_FB_SIZE             (400K)      // FB memory: header + VGA/GS image
 #define OMV_FB_ALLOC_SIZE       (96K)       // minimum fb alloc size
-#define OMV_STACK_SIZE          (15K)
-#define OMV_HEAP_SIZE           (228K)
+#define OMV_STACK_SIZE          (64K)
+#define OMV_HEAP_SIZE           (242K)
 
 #define OMV_LINE_BUF_SIZE       (3 * 1024)  // Image line buffer round(640 * 2BPP * 2 buffers).
 #define OMV_MSC_BUF_SIZE        (12K)       // USB MSC bot data
@@ -149,8 +161,10 @@
     #define OMV_TEXT_LENGTH         1792K
 #endif
 
-#define OMV_CCM_ORIGIN          0x20000000  // Note accessible by CPU and MDMA only.
-#define OMV_CCM_LENGTH          128K
+#define OMV_DTCM_ORIGIN         0x20000000  // Note accessible by CPU and MDMA only.
+#define OMV_DTCM_LENGTH         128K
+#define OMV_ITCM_ORIGIN         0x00000000
+#define OMV_ITCM_LENGTH         64K
 #define OMV_SRAM1_ORIGIN        0x30000000
 #define OMV_SRAM1_LENGTH        256K
 #define OMV_SRAM3_ORIGIN        0x30040000
