@@ -1,6 +1,6 @@
 # QSPI Flasher
 
-## STM32H750VB_W25Qxx_WeActStudio.FLM
+## STM32H7xx_W25Qxx_WeActStudio.FLM
 > Keil MDK
 Support 4MB ~ 16MB W25Qxx Flash
 
@@ -11,7 +11,7 @@ Please copy the file to `"KeilInstallationDirectory"\ARM\Flash`
 ![](Images/KeilSetup.png)
 
 
-## STM32H750VB_W25Qxx_WeActStudio.stldr
+## STM32H7xx_W25Qxx_WeActStudio.stldr
 > STM32CubeProgrammer
 Support 4MB ~ 16MB W25Qxx Flash
 
