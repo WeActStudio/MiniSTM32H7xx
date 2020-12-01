@@ -21,7 +21,7 @@
 
 // OpenMV Run in QSPI Flash
 // if not define this run in Internal Flash
-#define OMV_RUN_QSPI
+//#define OMV_RUN_QSPI
 
 // Flash sectors for the bootloader.
 // Flash FS sector, main FW sector, max sector.

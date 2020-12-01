@@ -35,8 +35,8 @@
 #define USBD_CONFIGURATION_HS_STRING  "VCP Config"
 
 // UART1 config
-#define MICROPY_HW_UART1_TX  (pin_A10)
-#define MICROPY_HW_UART1_RX  (pin_A9)
+#define MICROPY_HW_UART1_TX  (pin_A9)
+#define MICROPY_HW_UART1_RX  (pin_A10)
 
 // UART3 config
 #define MICROPY_HW_UART3_TX  (pin_B10)
