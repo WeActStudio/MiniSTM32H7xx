@@ -71,22 +71,22 @@ while(True):
     if KEY.value() == 1:
         while KEY.value() == 1:
             blue_led.on()
-            sleep(50)
+            sleep(0.05)
             blue_led.off()
-            sleep(50)
+            sleep(0.05)
             keycount += 1
             if keycount > 3:
                 # 长按K1,开始对焦
                 if sensor.get_id() == sensor.OV5640:
                     while KEY.value() == 1:
                         blue_led.on()
-                        sleep(100)
+                        sleep(0.1)
                         blue_led.off()
-                        sleep(100)
+                        sleep(0.1)
                     sensor.__write_reg(0x3022,0x03)
 
         if keycount <= 3:
-            sleep(100)
+            sleep(0.1)
             name='example'+str(file_count)+'.jpg'
             sensor.snapshot().save(name)
             print("Done! Reset the camera to see the saved image.")

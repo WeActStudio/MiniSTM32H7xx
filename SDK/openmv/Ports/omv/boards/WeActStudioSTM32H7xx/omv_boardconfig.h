@@ -15,6 +15,7 @@
 #define OMV_ARCH_STR            "WeAct H7xx 1024" // 33 chars max
 #define OMV_BOARD_TYPE          "H7"
 #define OMV_UNIQUE_ID_ADDR      0x1FF1E800
+#define OMV_UNIQUE_ID_SIZE      3 // 3 words
 
 // Needed by the SWD JTAG testrig - located at the bottom of the frame buffer stack.
 #define OMV_SELF_TEST_SWD_ADDR  MAIN_FB()->bpp
@@ -68,6 +69,9 @@
 #define OMV_ENABLE_LEPTON       (0)
 #define OMV_ENABLE_HM01B0       (0)
 
+// Enable sensor features
+#define OMV_ENABLE_OV5640_AF    (0)
+
 // Enable WiFi debug
 //#define OMV_ENABLE_WIFIDBG      (0)
 
@@ -87,6 +91,9 @@
 
 // Core VBAT for selftests
 #define OMV_CORE_VBAT           "3.3"
+
+// USB IRQn.
+#define OMV_USB_IRQN            (OTG_FS_IRQn)
 
 //PLL1 480MHz/48MHz for USB, SDMMC and FDCAN
 #define OMV_OSC_PLL1M           (5)
@@ -119,15 +126,21 @@
 #define OMV_OSC_PLL3FRAC        (0)
 
 // Clock Sources
-#define OMV_OSC_USB_CLKSOURCE       RCC_USBCLKSOURCE_PLL
+#define OMV_OSC_PLL_CLKSOURCE       RCC_PLLSOURCE_HSE
+#define OMV_OSC_USB_CLKSOURCE       RCC_USBCLKSOURCE_HSI48
+#define OMV_OSC_RNG_CLKSOURCE       RCC_RNGCLKSOURCE_HSI48
 #define OMV_OSC_ADC_CLKSOURCE       RCC_ADCCLKSOURCE_PLL3
 #define OMV_OSC_SPI123_CLKSOURCE    RCC_SPI123CLKSOURCE_PLL3
 
 // HSE/HSI/CSI State
 #define OMV_OSC_HSE_STATE       (RCC_HSE_ON)
+#define OMV_OSC_HSI48_STATE     (RCC_HSI48_ON)
 
 // Flash Latency
 #define OMV_FLASH_LATENCY       (FLASH_LATENCY_2)
+
+// Power supply configuration
+#define OMV_PWR_SUPPLY          (PWR_LDO_SUPPLY)
 
 // Linker script constants (see the linker script template stm32fxxx.ld.S).
 // Note: fb_alloc is a stack-based, dynamically allocated memory on FB.
@@ -178,27 +191,29 @@
 #define OMV_DMA_REGION_BASE     (OMV_AXI_SRAM_ORIGIN+(496*1024))
 #define OMV_DMA_REGION_SIZE     MPU_REGION_SIZE_16KB
 
-/* SCCB/I2C */
-#define SCCB_I2C                (I2C1)
-#define SCCB_AF                 (GPIO_AF4_I2C1)
-#define SCCB_CLK_ENABLE()       __I2C1_CLK_ENABLE()
-#define SCCB_CLK_DISABLE()      __I2C1_CLK_DISABLE()
-#define SCCB_PORT               (GPIOB)
-#define SCCB_SCL_PIN            (GPIO_PIN_8)
-#define SCCB_SDA_PIN            (GPIO_PIN_9)
-#define SCCB_TIMING             (I2C_TIMING_STANDARD)
-#define SCCB_FORCE_RESET()      __HAL_RCC_I2C1_FORCE_RESET()
-#define SCCB_RELEASE_RESET()    __HAL_RCC_I2C1_RELEASE_RESET()
+// Image sensor I2C
+#define ISC_I2C                 (I2C1)
+#define ISC_I2C_ID              (1)
+#define ISC_I2C_AF              (GPIO_AF4_I2C1)
+#define ISC_I2C_CLK_ENABLE()    __I2C1_CLK_ENABLE()
+#define ISC_I2C_CLK_DISABLE()   __I2C1_CLK_DISABLE()
+#define ISC_I2C_PORT            (GPIOB)
+#define ISC_I2C_SCL_PIN         (GPIO_PIN_8)
+#define ISC_I2C_SDA_PIN         (GPIO_PIN_9)
+#define ISC_I2C_SPEED           (CAMBUS_SPEED_STANDARD)
+#define ISC_I2C_FORCE_RESET()   __HAL_RCC_I2C1_FORCE_RESET()
+#define ISC_I2C_RELEASE_RESET() __HAL_RCC_I2C1_RELEASE_RESET()
 
 /* FIR I2C */
 #define FIR_I2C                 (I2C2)
+#define FIR_I2C_ID              (2)
 #define FIR_I2C_AF              (GPIO_AF4_I2C2)
 #define FIR_I2C_CLK_ENABLE()    __I2C2_CLK_ENABLE()
 #define FIR_I2C_CLK_DISABLE()   __I2C2_CLK_DISABLE()
 #define FIR_I2C_PORT            (GPIOB)
 #define FIR_I2C_SCL_PIN         (GPIO_PIN_10)
 #define FIR_I2C_SDA_PIN         (GPIO_PIN_11)
-#define FIR_I2C_TIMING          (I2C_TIMING_FULL)
+#define FIR_I2C_SPEED           (CAMBUS_SPEED_FULL)
 #define FIR_I2C_FORCE_RESET()   __HAL_RCC_I2C2_FORCE_RESET()
 #define FIR_I2C_RELEASE_RESET() __HAL_RCC_I2C2_RELEASE_RESET()
 
@@ -253,6 +268,34 @@
 #define DCMI_VSYNC_IRQN         EXTI9_5_IRQn
 #define DCMI_VSYNC_IRQ_LINE     (7)
 
+/*
+#define WINC_SPI                (SPI2)
+#define WINC_SPI_AF             (GPIO_AF5_SPI2)
+#define WINC_SPI_TIMEOUT        (1000)
+// SPI1/2/3 clock source is PLL2 (160MHz/4 == 40MHz).
+#define WINC_SPI_PRESCALER      (SPI_BAUDRATEPRESCALER_4)
+#define WINC_SPI_CLK_ENABLE()   __HAL_RCC_SPI2_CLK_ENABLE()
+
+#define WINC_SPI_SCLK_PIN       (GPIO_PIN_13)
+#define WINC_SPI_MISO_PIN       (GPIO_PIN_14)
+#define WINC_SPI_MOSI_PIN       (GPIO_PIN_15)
+
+#define WINC_SPI_SCLK_PORT      (GPIOB)
+#define WINC_SPI_MISO_PORT      (GPIOB)
+#define WINC_SPI_MOSI_PORT      (GPIOB)
+
+#define WINC_EN_PIN             (GPIO_PIN_5)
+#define WINC_CS_PIN             (GPIO_PIN_12)
+#define WINC_RST_PIN            (GPIO_PIN_12)
+#define WINC_IRQ_PIN            (pin_D13)
+
+#define WINC_EN_PORT            (GPIOA)
+#define WINC_CS_PORT            (GPIOB)
+#define WINC_RST_PORT           (GPIOD)
+
+#define WINC_CS_LOW()           HAL_GPIO_WritePin(WINC_CS_PORT, WINC_CS_PIN, GPIO_PIN_RESET)
+#define WINC_CS_HIGH()          HAL_GPIO_WritePin(WINC_CS_PORT, WINC_CS_PIN, GPIO_PIN_SET)
+*/
 
 #define SOFT_I2C_PORT                GPIOB
 #define SOFT_I2C_SIOC_PIN            GPIO_PIN_10
@@ -271,8 +314,7 @@
 
 /*
 #define LEPTON_SPI                  (SPI3)
-#define LEPTON_SPI_AF               (GPIO_AF6_SPI3)
-// SPI1/2/3 clock source is PLL2 (160MHz/8 == 20MHz).
+// SPI1/2/3 clock source is PLL3 (160MHz/8 == 20MHz) - Minimum (164*240*8*27 = 8,501,760Hz)
 #define LEPTON_SPI_PRESCALER        (SPI_BAUDRATEPRESCALER_8)
 
 #define LEPTON_SPI_IRQn             (SPI3_IRQn)
@@ -290,6 +332,11 @@
 #define LEPTON_SPI_CLK_ENABLE()     __HAL_RCC_SPI3_CLK_ENABLE()
 #define LEPTON_SPI_CLK_DISABLE()    __HAL_RCC_SPI3_CLK_DISABLE()
 
+#define LEPTON_SPI_SCLK_AF          (GPIO_AF6_SPI3)
+#define LEPTON_SPI_MISO_AF          (GPIO_AF6_SPI3)
+#define LEPTON_SPI_MOSI_AF          (GPIO_AF7_SPI3)
+#define LEPTON_SPI_SSEL_AF          (GPIO_AF6_SPI3)
+
 #define LEPTON_SPI_SCLK_PIN         (GPIO_PIN_3)
 #define LEPTON_SPI_MISO_PIN         (GPIO_PIN_4)
 #define LEPTON_SPI_MOSI_PIN         (GPIO_PIN_5)
@@ -300,6 +347,98 @@
 #define LEPTON_SPI_MOSI_PORT        (GPIOB)
 #define LEPTON_SPI_SSEL_PORT        (GPIOA)
 */
+
+/*
+// The IMU sensor is on the same SPI bus pins as the camera module interface
+// SPI bus. While the buses overlap both devices will never be in-use at once.
+
+#define IMU_SPI                     (SPI1)
+#define IMU_SPI_AF                  (GPIO_AF5_SPI1)
+// SPI1/2/3 clock source is PLL2 (160MHz/16 == 10MHz).
+#define IMU_SPI_PRESCALER           (SPI_BAUDRATEPRESCALER_16)
+
+#define IMU_SPI_RESET()             __HAL_RCC_SPI1_FORCE_RESET()
+#define IMU_SPI_RELEASE()           __HAL_RCC_SPI1_RELEASE_RESET()
+
+#define IMU_SPI_CLK_ENABLE()        __HAL_RCC_SPI1_CLK_ENABLE()
+#define IMU_SPI_CLK_DISABLE()       __HAL_RCC_SPI1_CLK_DISABLE()
+
+#define IMU_SPI_SCLK_PIN            (GPIO_PIN_3)
+#define IMU_SPI_MISO_PIN            (GPIO_PIN_4)
+#define IMU_SPI_MOSI_PIN            (GPIO_PIN_5)
+#define IMU_SPI_SSEL_PIN            (GPIO_PIN_15)
+
+#define IMU_SPI_SCLK_PORT           (GPIOB)
+#define IMU_SPI_MISO_PORT           (GPIOB)
+#define IMU_SPI_MOSI_PORT           (GPIOB)
+#define IMU_SPI_SSEL_PORT           (GPIOA)
+*/
+
+// SPI LCD Interface
+#define OMV_SPI_LCD_CONTROLLER              (&spi_obj[3])
+#define OMV_SPI_LCD_CONTROLLER_INSTANCE     (SPI4)
+
+#define OMV_SPI_LCD_MOSI_PIN                (GPIO_PIN_14)
+#define OMV_SPI_LCD_MOSI_PORT               (GPIOE)
+#define OMV_SPI_LCD_MOSI_ALT                (GPIO_AF5_SPI4)
+
+#define OMV_SPI_LCD_MISO_PIN                (GPIO_PIN_13)
+#define OMV_SPI_LCD_MISO_PORT               (GPIOE)
+#define OMV_SPI_LCD_MISO_ALT                (GPIO_AF5_SPI4)
+
+#define OMV_SPI_LCD_SCLK_PIN                (GPIO_PIN_12)
+#define OMV_SPI_LCD_SCLK_PORT               (GPIOE)
+#define OMV_SPI_LCD_SCLK_ALT                (GPIO_AF5_SPI4)
+
+#define OMV_SPI_LCD_RST_PIN                 //(GPIO_PIN_15)
+#define OMV_SPI_LCD_RST_PORT                //(GPIOE)
+#define OMV_SPI_LCD_RST_OFF()               //HAL_GPIO_WritePin(OMV_SPI_LCD_RST_PORT, OMV_SPI_LCD_RST_PIN, GPIO_PIN_SET)
+#define OMV_SPI_LCD_RST_ON()                //HAL_GPIO_WritePin(OMV_SPI_LCD_RST_PORT, OMV_SPI_LCD_RST_PIN, GPIO_PIN_RESET)
+
+#define OMV_SPI_LCD_RS_PIN                  (GPIO_PIN_13)
+#define OMV_SPI_LCD_RS_PORT                 (GPIOE)
+#define OMV_SPI_LCD_RS_OFF()                HAL_GPIO_WritePin(OMV_SPI_LCD_RS_PORT, OMV_SPI_LCD_RS_PIN, GPIO_PIN_SET)
+#define OMV_SPI_LCD_RS_ON()                 HAL_GPIO_WritePin(OMV_SPI_LCD_RS_PORT, OMV_SPI_LCD_RS_PIN, GPIO_PIN_RESET)
+
+#define OMV_SPI_LCD_CS_PIN                  (GPIO_PIN_11)
+#define OMV_SPI_LCD_CS_PORT                 (GPIOE)
+#define OMV_SPI_LCD_CS_HIGH()               HAL_GPIO_WritePin(OMV_SPI_LCD_CS_PORT, OMV_SPI_LCD_CS_PIN, GPIO_PIN_SET)
+#define OMV_SPI_LCD_CS_LOW()                HAL_GPIO_WritePin(OMV_SPI_LCD_CS_PORT, OMV_SPI_LCD_CS_PIN, GPIO_PIN_RESET)
+
+#define OMV_SPI_LCD_BL_PIN                  (GPIO_PIN_10)
+#define OMV_SPI_LCD_BL_PORT                 (GPIOE)
+#define OMV_SPI_LCD_BL_ON()                 HAL_GPIO_WritePin(OMV_SPI_LCD_BL_PORT, OMV_SPI_LCD_BL_PIN, GPIO_PIN_RESET)
+#define OMV_SPI_LCD_BL_OFF()                HAL_GPIO_WritePin(OMV_SPI_LCD_BL_PORT, OMV_SPI_LCD_BL_PIN, GPIO_PIN_SET)
+
+// FIR Module
+#define OMV_ENABLE_FIR_MLX90621             (1)
+#define OMV_ENABLE_FIR_MLX90640             (1)
+#define OMV_ENABLE_FIR_MLX90641             (0)
+#define OMV_ENABLE_FIR_AMG8833              (1)
+#define OMV_ENABLE_FIR_LEPTON               (1)
+
+// FIR Lepton
+#define OMV_FIR_LEPTON_I2C_BUS              (FIR_I2C_ID)
+#define OMV_FIR_LEPTON_I2C_BUS_SPEED        (FIR_I2C_SPEED)
+#define OMV_FIR_LEPTON_CONTROLLER           (&spi_obj[1])
+#define OMV_FIR_LEPTON_CONTROLLER_INSTANCE  (SPI2)
+
+#define OMV_FIR_LEPTON_MOSI_PIN             (GPIO_PIN_15)
+#define OMV_FIR_LEPTON_MOSI_PORT            (GPIOB)
+#define OMV_FIR_LEPTON_MOSI_ALT             (GPIO_AF5_SPI2)
+
+#define OMV_FIR_LEPTON_MISO_PIN             (GPIO_PIN_14)
+#define OMV_FIR_LEPTON_MISO_PORT            (GPIOB)
+#define OMV_FIR_LEPTON_MISO_ALT             (GPIO_AF5_SPI2)
+
+#define OMV_FIR_LEPTON_SCLK_PIN             (GPIO_PIN_13)
+#define OMV_FIR_LEPTON_SCLK_PORT            (GPIOB)
+#define OMV_FIR_LEPTON_SCLK_ALT             (GPIO_AF5_SPI2)
+
+#define OMV_FIR_LEPTON_CS_PIN               (GPIO_PIN_12)
+#define OMV_FIR_LEPTON_CS_PORT              (GPIOB)
+#define OMV_FIR_LEPTON_CS_HIGH()            HAL_GPIO_WritePin(OMV_FIR_LEPTON_CS_PORT, OMV_FIR_LEPTON_CS_PIN, GPIO_PIN_SET)
+#define OMV_FIR_LEPTON_CS_LOW()             HAL_GPIO_WritePin(OMV_FIR_LEPTON_CS_PORT, OMV_FIR_LEPTON_CS_PIN, GPIO_PIN_RESET)
 
 // QSPI flash configuration for the bootloader.
 #define QSPIF_SIZE_BITS             (23)        // 2**23 == 8MBytes.

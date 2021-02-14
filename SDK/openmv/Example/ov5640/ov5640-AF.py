@@ -4,7 +4,7 @@
 # 单击K1,启动单点自动对焦
 # 长按K1,释放对焦马达,镜头回到初始状态
 
-import sensor, image, time, sys
+import sensor, image, time, sys,lcd
 from time import sleep
 
 from pyb import LED,Pin
@@ -60,48 +60,53 @@ KEY = Pin('C13',Pin.IN,Pin.PULL_DOWN)
 
 sensor.reset()
 sensor.set_pixformat(sensor.RGB565)
-sensor.set_framesize(sensor.QVGA)
+sensor.set_framesize(sensor.QQVGA)
 
 if sensor.get_id() != sensor.OV5640:
-    print('Only run for ov5640')
-    sys.exit(0)
+    if sensor.get_id() == sensor.OV7725:
+        sensor.set_hmirror(True)
+        sensor.set_vflip(True)
+    # sys.exit(0)
+else:
+    print('ov5640 AF Firmware Init ...')
+    OV5640AF_Init()
 
-print('ov5640 AF Firmware Init ...')
-OV5640AF_Init()
-
+lcd.init(type=2)                    # Initialize the lcd screen.
 clock = time.clock()
 
 keycount=0
 while(True):
     clock.tick()
     img = sensor.snapshot()
+    lcd.display(sensor.snapshot())  # Take a picture and display the image.
     print(clock.fps())
 
-    if KEY.value() == 1:
-        while KEY.value() == 1:
-            blue_led.on()
-            sleep(50)
-            blue_led.off()
-            sleep(50)
-            keycount += 1
-            if keycount > 3:
-                # 长按K1,释放对焦马达,镜头回到初始状态
-                sensor.__write_reg(0x3022,0x08)
-                while KEY.value() == 1:
-                    blue_led.on()
-                    sleep(100)
-                    blue_led.off()
-                    sleep(100)
-        if keycount <= 3:
-            sensor.__write_reg(0x3022,0x03)
+    if sensor.get_id() == sensor.OV5640:
+        if KEY.value() == 1:
+            while KEY.value() == 1:
+                blue_led.on()
+                sleep(0.05)
+                blue_led.off()
+                sleep(0.05)
+                keycount += 1
+                if keycount > 3:
+                    # 长按K1,释放对焦马达,镜头回到初始状态
+                    sensor.__write_reg(0x3022,0x08)
+                    while KEY.value() == 1:
+                        blue_led.on()
+                        sleep(0.1)
+                        blue_led.off()
+                        sleep(0.1)
+            if keycount <= 3:
+                sensor.__write_reg(0x3022,0x03)
 
-    # 判断对焦是否完成
-    if keycount != 0:
-        # 读取对焦状态
-        result = sensor.__read_reg(0x3029)
-        print('FW_STATUS: %X' %result)
-        if result == 0x10 or result == 0x70:
-            # 对焦完成,暂停对焦过程,使镜头将保持在此对焦位置
-            sensor.__write_reg(0x3022,0x06)
-            keycount = 0
+        # 判断对焦是否完成
+        if keycount != 0:
+            # 读取对焦状态
+            result = sensor.__read_reg(0x3029)
+            print('FW_STATUS: %X' %result)
+            if result == 0x10 or result == 0x70:
+                # 对焦完成,暂停对焦过程,使镜头将保持在此对焦位置
+                sensor.__write_reg(0x3022,0x06)
+                keycount = 0
 

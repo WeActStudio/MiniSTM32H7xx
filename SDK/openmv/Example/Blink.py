@@ -12,4 +12,4 @@ class Foo(object):
 blue = Foo(pyb.Timer(2, freq=2), pyb.LED(1)) # LED(1) -> PE3
 
 while True:
-    time.sleep(1000)
+    time.sleep(1)

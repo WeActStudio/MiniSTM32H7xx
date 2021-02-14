@@ -46,8 +46,8 @@ def OV5640AF_Init():
         result = sensor.__read_reg(0x3029)
         print('FW_STATUS: %X' %result)
         if result != 0x7F:
-            break;
-        sleep(500);
+            break
+        sleep(500)
 
 # Reset sensor
 sensor.reset()
@@ -98,18 +98,18 @@ while (True):
     if KEY.value() == 1:
         while KEY.value() == 1:
             blue_led.on()
-            sleep(50)
+            sleep(0.05)
             blue_led.off()
-            sleep(50)
+            sleep(0.05)
             keycount += 1
             if keycount > 3:
                 # 长按K1,释放对焦马达,镜头回到初始状态
                 sensor.__write_reg(0x3022,0x08)
                 while KEY.value() == 1:
                     blue_led.on()
-                    sleep(100)
+                    sleep(0.1)
                     blue_led.off()
-                    sleep(100)
+                    sleep(0.1)
         if keycount <= 3:
             sensor.__write_reg(0x3022,0x03)
 

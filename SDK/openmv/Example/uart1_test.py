@@ -12,5 +12,5 @@ while True:
         for t in rec:
             print('%#x '%t,end='')
         print('\r\n')
-    sleep(100)
+    sleep(0.1)
     LED(1).toggle()

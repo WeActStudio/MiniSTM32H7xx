@@ -13,6 +13,9 @@
 #define MICROPY_HW_ENABLE_USB       (1)
 #define MICROPY_HW_ENABLE_SDCARD    (1)
 #define MICROPY_FATFS_EXFAT         (1)
+// Reserved DMA streams
+#define MICROPY_HW_DMA1S0_IS_RESERVED
+#define MICROPY_HW_DMA2S1_IS_RESERVED
 
 // Note these are not used in top system.c.
 #define MICROPY_HW_CLK_PLLM         (5)
