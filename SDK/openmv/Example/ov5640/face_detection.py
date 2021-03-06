@@ -47,7 +47,7 @@ def OV5640AF_Init():
         print('FW_STATUS: %X' %result)
         if result != 0x7F:
             break
-        sleep(500)
+        sleep(0.5)
 
 # Reset sensor
 sensor.reset()

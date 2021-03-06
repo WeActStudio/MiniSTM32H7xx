@@ -44,8 +44,8 @@ def OV5640AF_Init():
         result = sensor.__read_reg(0x3029)
         print('FW_STATUS: %X' %result)
         if result != 0x7F:
-            break;
-        sleep(500);
+            break
+        sleep(0.5)
 
 
 sensor.reset() # Initialize the camera sensor.
