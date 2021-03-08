@@ -291,7 +291,10 @@ static int32_t lcd_writereg(uint8_t reg,uint8_t* pdata,uint32_t length)
 	if(length > 0)
 		result += HAL_SPI_Transmit(SPI_Drv,pdata,length,500);
 	LCD_CS_SET;
-	result /= -result;
+	if(result>0){
+		result = -1;}
+	else{
+		result = 0;}
 	return result;
 }
 
@@ -305,7 +308,10 @@ static int32_t lcd_readreg(uint8_t reg,uint8_t* pdata)
 	LCD_RS_SET;
 	result += HAL_SPI_Receive(SPI_Drv,pdata,1,500);
 	LCD_CS_SET;
-	result /= -result;
+	if(result>0){
+		result = -1;}
+	else{
+		result = 0;}
 	return result;
 }
 
@@ -316,7 +322,10 @@ static int32_t lcd_senddata(uint8_t* pdata,uint32_t length)
 	//LCD_RS_SET;
 	result =HAL_SPI_Transmit(SPI_Drv,pdata,length,100);
 	LCD_CS_SET;
-	result /= -result;
+	if(result>0){
+		result = -1;}
+	else{
+		result = 0;}
 	return result;
 }
 
@@ -327,7 +336,10 @@ static int32_t lcd_recvdata(uint8_t* pdata,uint32_t length)
 	//LCD_RS_SET;
 	result = HAL_SPI_Receive(SPI_Drv,pdata,length,500);
 	LCD_CS_SET;
-	result /= -result;
+	if(result>0){
+		result = -1;}
+	else{
+		result = 0;}
 	return result;
 }
 
