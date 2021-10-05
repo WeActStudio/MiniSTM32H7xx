@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32H750xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;   ../USB_DEVICE/App;   ../USB_DEVICE/Target;   ../Drivers/STM32H7xx_HAL_Driver/Inc;   ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy;   ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;   ../Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc;   ../Drivers/CMSIS/Device/ST/STM32H7xx/Include;   ../Drivers/CMSIS/Include;   ..\Drivers\BSP\w25qxx</IncludePath>
+              <IncludePath>../Core/Inc;          ../USB_DEVICE/App;          ../USB_DEVICE/Target;          ../Drivers/STM32H7xx_HAL_Driver/Inc;          ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy;          ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc;          ../Middlewares/ST/STM32_USB_Device_Library/Class/CustomHID/Inc;          ../Drivers/CMSIS/Device/ST/STM32H7xx/Include;          ../Drivers/CMSIS/Include;          ..\Drivers\BSP\w25qxx</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
