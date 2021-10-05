@@ -73,7 +73,7 @@ void MX_USB_DEVICE_Init(void)
 	w25qxx_EnterQPI();
 	
   /* USER CODE END USB_DEVICE_Init_PreTreatment */
-  
+
   /* Init Device Library, add supported class and start the library. */
   if (USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS) != USBD_OK)
   {

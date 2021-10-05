@@ -54,7 +54,7 @@ void LCD_Test(void)
 	#elif TFT18
 	ST7735Ctx.Orientation = ST7735_ORIENTATION_PORTRAIT;
 	ST7735Ctx.Panel = BOE_Panel;
-	ST7735Ctx.Type = ST7735_1_8_inch_screen;
+	ST7735Ctx.Type = ST7735_1_8a_inch_screen;
 	#else
 	error "Unknown Screen"
 	
@@ -67,7 +67,9 @@ void LCD_Test(void)
 	LCD_SetBrightness(0);
 
 	ST7735_LCD_Driver.FillRect(&st7735_pObj, 0, 0, ST7735Ctx.Width,ST7735Ctx.Height, BLACK);
-
+  
+  delay_ms(100);
+  
 	sprintf((char *)&text, "WeAct Studio");
 	LCD_ShowString(4, 4, ST7735Ctx.Width, 16, 16, text);
 	sprintf((char *)&text, "STM32H7xx 0x%X", HAL_GetDEVID());

@@ -54,7 +54,7 @@ void LCD_Test(void)
 	#elif TFT18
 	ST7735Ctx.Orientation = ST7735_ORIENTATION_PORTRAIT;
 	ST7735Ctx.Panel = BOE_Panel;
-	ST7735Ctx.Type = ST7735_1_8_inch_screen;
+	ST7735Ctx.Type = ST7735_1_8a_inch_screen;
 	#else
 	error "Unknown Screen"
 	

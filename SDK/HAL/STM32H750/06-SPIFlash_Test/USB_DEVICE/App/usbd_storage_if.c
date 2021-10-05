@@ -275,11 +275,9 @@ int8_t STORAGE_Read_FS(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t bl
   * @param  lun: .
   * @retval USBD_OK if all operations are OK else USBD_FAIL
   */
-uint8_t lun_t;
 int8_t STORAGE_Write_FS(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len)
 {
   /* USER CODE BEGIN 7 */
-	lun_t = lun;
 	if(lun == 0)
 	{
 		uint16_t i = 0;
