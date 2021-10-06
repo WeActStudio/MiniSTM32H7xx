@@ -29,7 +29,6 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32h7xx_hal.h"
-#include "stm32h7xx_hal.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -59,6 +58,8 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define CUSTOM_HID_EPOUT_SIZE 0x40U
+#define CUSTOM_HID_EPIN_SIZE 0x40U
 #define PE3_Pin GPIO_PIN_3
 #define PE3_GPIO_Port GPIOE
 #define K1_Pin GPIO_PIN_13
