@@ -7,7 +7,7 @@
 
   <Targets>
     <Target>
-      <TargetName>03-LCD_Test_0_96</TargetName>
+      <TargetName>03-LCD_Test</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
@@ -189,7 +189,7 @@
             <hadIRAM2>1</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
-            <useUlib>1</useUlib>
+            <useUlib>0</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <nSecure>0</nSecure>
@@ -326,7 +326,7 @@
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
-            <uGnu>0</uGnu>
+            <uGnu>1</uGnu>
             <useXO>0</useXO>
             <v6Lang>1</v6Lang>
             <v6LangP>1</v6LangP>
@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32H750xx,TFT96</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;           ../Drivers/STM32H7xx_HAL_Driver/Inc;           ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy;           ../Drivers/CMSIS/Device/ST/STM32H7xx/Include;           ../Drivers/CMSIS/Include;           ..\Drivers\BSP\ST7735</IncludePath>
+              <IncludePath>../Inc;../Drivers/STM32H7xx_HAL_Driver/Inc;../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32H7xx/Include;../Drivers/CMSIS/Include;..\Drivers\BSP\ST7735</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -475,6 +475,11 @@
           <GroupName>Application/User</GroupName>
           <Files>
             <File>
+              <FileName>debug.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Src/debug.c</FilePath>
+            </File>
+            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/main.c</FilePath>
@@ -483,11 +488,6 @@
               <FileName>gpio.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/gpio.c</FilePath>
-            </File>
-            <File>
-              <FileName>debug.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Src/debug.c</FilePath>
             </File>
             <File>
               <FileName>rtc.c</FileName>
@@ -1115,6 +1115,11 @@
           <GroupName>Application/User</GroupName>
           <Files>
             <File>
+              <FileName>debug.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Src/debug.c</FilePath>
+            </File>
+            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/main.c</FilePath>
@@ -1123,11 +1128,6 @@
               <FileName>gpio.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/gpio.c</FilePath>
-            </File>
-            <File>
-              <FileName>debug.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Src/debug.c</FilePath>
             </File>
             <File>
               <FileName>rtc.c</FileName>
@@ -1619,7 +1619,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32H750xx,TFT18</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;           ../Drivers/STM32H7xx_HAL_Driver/Inc;           ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy;           ../Drivers/CMSIS/Device/ST/STM32H7xx/Include;           ../Drivers/CMSIS/Include;           ..\Drivers\BSP\ST7735</IncludePath>
+              <IncludePath>../Inc;../Drivers/STM32H7xx_HAL_Driver/Inc;../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32H7xx/Include;../Drivers/CMSIS/Include;..\Drivers\BSP\ST7735</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -1755,6 +1755,11 @@
           <GroupName>Application/User</GroupName>
           <Files>
             <File>
+              <FileName>debug.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Src/debug.c</FilePath>
+            </File>
+            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/main.c</FilePath>
@@ -1763,11 +1768,6 @@
               <FileName>gpio.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/gpio.c</FilePath>
-            </File>
-            <File>
-              <FileName>debug.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Src/debug.c</FilePath>
             </File>
             <File>
               <FileName>rtc.c</FileName>
@@ -2259,7 +2259,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32H750xx,TFT18,W25Qxx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;           ../Drivers/STM32H7xx_HAL_Driver/Inc;           ../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy;           ../Drivers/CMSIS/Device/ST/STM32H7xx/Include;           ../Drivers/CMSIS/Include;           ..\Drivers\BSP\ST7735</IncludePath>
+              <IncludePath>../Inc;../Drivers/STM32H7xx_HAL_Driver/Inc;../Drivers/STM32H7xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32H7xx/Include;../Drivers/CMSIS/Include;..\Drivers\BSP\ST7735</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -2395,6 +2395,11 @@
           <GroupName>Application/User</GroupName>
           <Files>
             <File>
+              <FileName>debug.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Src/debug.c</FilePath>
+            </File>
+            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/main.c</FilePath>
@@ -2403,11 +2408,6 @@
               <FileName>gpio.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/gpio.c</FilePath>
-            </File>
-            <File>
-              <FileName>debug.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Src/debug.c</FilePath>
             </File>
             <File>
               <FileName>rtc.c</FileName>
@@ -2574,7 +2574,7 @@
       <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="4.3.0" condition="CMSIS Core">
         <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="4.5.0"/>
         <targetInfos>
-          <targetInfo name="03-LCD_Test_0_96"/>
+          <targetInfo name="03-LCD_Test"/>
           <targetInfo name="03-LCD_Test_0_96_W25Qxx"/>
           <targetInfo name="03-LCD_Test_1_8"/>
           <targetInfo name="03-LCD_Test_1_8_W25Qxx"/>
