@@ -33,7 +33,7 @@ LED_BLUE,PE3
 
 1. Clone openmv source code
 ```
-git clone https://github.com/WeActTC/openmv.git --depth=1
+git clone https://github.com/WeActTC/openmv.git --depth=1 -b WeActStudio
 ```
 
 2. Init source code
@@ -54,12 +54,8 @@ sudo apt-get install gcc-arm-none-eabi
 
 4. Bulid
 ```
-# 1. Copy `Ports/omv/boards/WeActStudioSTM32H7xx` to `openmv/src/omv/boards/`
-# 2. Copy `Ports/micropython/boards/WeActStudioSTM32H7xx` to `openmv/src/micropython/ports/stm32/boards/`
-# 3. Copy `Ports/micropython/micropython-Add-WeAct-Studio-STM32H7xx-Support.patch` to `openmv/src/micropython/`
 # go to `openmv/src`
 cd micropython
-git am micropython-Add-WeAct-Studio-STM32H7xx-Support.patch
 cd mpy-cross
 make -j
 cd ../../
