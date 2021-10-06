@@ -71,6 +71,9 @@ void HAL_MspInit(void)
 
   /* System interrupt init*/
 
+  /** Enable the VREF clock
+  */
+  __HAL_RCC_VREF_CLK_ENABLE();
   /** Disable the Internal Voltage Reference buffer
   */
   HAL_SYSCFG_DisableVREFBUF();
