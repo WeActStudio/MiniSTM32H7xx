@@ -1,12 +1,12 @@
 /**
   ******************************************************************************
-  * File Name          : DCMI.c
-  * Description        : This file provides code for the configuration
-  *                      of the DCMI instances.
+  * @file    dcmi.c
+  * @brief   This file provides code for the configuration
+  *          of the DCMI instances.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
   * This software component is licensed by ST under BSD 3-Clause license,
@@ -31,6 +31,13 @@ DMA_HandleTypeDef hdma_dcmi;
 void MX_DCMI_Init(void)
 {
 
+  /* USER CODE BEGIN DCMI_Init 0 */
+
+  /* USER CODE END DCMI_Init 0 */
+
+  /* USER CODE BEGIN DCMI_Init 1 */
+
+  /* USER CODE END DCMI_Init 1 */
   hdcmi.Instance = DCMI;
   hdcmi.Init.SynchroMode = DCMI_SYNCHRO_HARDWARE;
   hdcmi.Init.PCKPolarity = DCMI_PCKPOLARITY_RISING;
@@ -47,6 +54,9 @@ void MX_DCMI_Init(void)
   {
     Error_Handler();
   }
+  /* USER CODE BEGIN DCMI_Init 2 */
+
+  /* USER CODE END DCMI_Init 2 */
 
 }
 
