@@ -53,6 +53,9 @@
 ### 淘宝购买链接
 1. [WeAct Studio官方店](https://shop118454188.taobao.com/index.htm?spm=2013.1.w5002-17867322799.2.212f5cb16nqwNP)
 
+### AliExpress
+1. [WeAct Studio Official Store](https://weactstudio.aliexpress.com/)
+
 ## 开始使用 Begin to use
 ### 安装 Install 0.96'' ST7735 TFT 
 ![](./Images/ST7735/Install-1.png)
