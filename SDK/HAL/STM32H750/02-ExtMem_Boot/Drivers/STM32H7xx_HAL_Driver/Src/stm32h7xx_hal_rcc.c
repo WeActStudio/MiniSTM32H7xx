@@ -54,14 +54,12 @@
  ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2017 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
-  *
+  * This software is licensed under terms that can be found in the LICENSE file in
+  * the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   ******************************************************************************
   */
 
@@ -355,6 +353,11 @@ HAL_StatusTypeDef HAL_RCC_DeInit(void)
   /* Reset PLL3FRACR register */
   CLEAR_REG(RCC->PLL3FRACR);
 
+#if defined(RCC_CR_HSEEXT)
+  /* Reset HSEEXT  */
+  CLEAR_BIT(RCC->CR, RCC_CR_HSEEXT);
+#endif /* RCC_CR_HSEEXT */
+
   /* Reset HSEBYP bit */
   CLEAR_BIT(RCC->CR, RCC_CR_HSEBYP);
 
@@ -481,9 +484,23 @@ __weak HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruc
       {
         return HAL_ERROR;
       }
-      /* Otherwise, just the calibration is allowed */
+      /* Otherwise, only HSI division and calibration are allowed */
       else
       {
+          /* Enable the Internal High Speed oscillator (HSI, HSIDIV2, HSIDIV4, or HSIDIV8) */
+          __HAL_RCC_HSI_CONFIG(RCC_OscInitStruct->HSIState);
+
+          /* Get Start Tick*/
+          tickstart = HAL_GetTick();
+
+          /* Wait till HSI is ready */
+          while(__HAL_RCC_GET_FLAG(RCC_FLAG_HSIRDY) == 0U)
+          {
+            if((uint32_t) (HAL_GetTick() - tickstart ) > HSI_TIMEOUT_VALUE)
+            {
+              return HAL_TIMEOUT;
+            }
+          }
         /* Adjusts the Internal High Speed oscillator (HSI) calibration value.*/
         __HAL_RCC_HSI_CALIBRATIONVALUE_ADJUST(RCC_OscInitStruct->HSICalibrationValue);
       }
@@ -746,6 +763,8 @@ __weak HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruc
       {
         /* Check the parameters */
         assert_param(IS_RCC_PLLSOURCE(RCC_OscInitStruct->PLL.PLLSource));
+        assert_param(IS_RCC_PLLRGE_VALUE(RCC_OscInitStruct->PLL.PLLRGE));
+        assert_param(IS_RCC_PLLVCO_VALUE(RCC_OscInitStruct->PLL.PLLVCOSEL));
         assert_param(IS_RCC_PLLM_VALUE(RCC_OscInitStruct->PLL.PLLM));
         assert_param(IS_RCC_PLLN_VALUE(RCC_OscInitStruct->PLL.PLLN));
         assert_param(IS_RCC_PLLP_VALUE(RCC_OscInitStruct->PLL.PLLP));
@@ -1772,4 +1791,3 @@ __weak void HAL_RCC_CCSCallback(void)
   * @}
   */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
