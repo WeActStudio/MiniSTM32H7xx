@@ -1,5 +1,5 @@
 # STM32H7xx Core Board 
-> `0.96''` ST7735 TFT, TF Card, 8MB QSPI FLASH(SPI1)， 8MB QSPI FLASH(QSPI1), 8Bit DVP Port
+> `0.96''` ST7735 TFT, TF Card, 8MB SPI FLASH(SPI1)， 8MB QSPI FLASH(QSPI1), 8Bit DVP Port
 
 > support openmv firmware, see SDK/openmv
 
