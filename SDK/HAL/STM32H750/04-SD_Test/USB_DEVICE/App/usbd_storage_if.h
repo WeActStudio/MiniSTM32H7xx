@@ -126,4 +126,3 @@ extern USBD_StorageTypeDef USBD_Storage_Interface_fops_FS;
 
 #endif /* __USBD_STORAGE_IF_H__ */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
