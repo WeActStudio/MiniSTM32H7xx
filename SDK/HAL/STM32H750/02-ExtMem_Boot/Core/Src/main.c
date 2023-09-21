@@ -157,7 +157,6 @@ int main(void)
 	W25qxx_WriteNoCheck(write,0,sizeof(write));
 	W25qxx_Read(read,0,sizeof(read));
 #endif
-	w25qxx_Startup(w25qxx_DTRMode);
 	
 #if W25Qxx_TEST == (0)
   /* Reset MCU && Long Press K1 to Enter ISP Mode */
@@ -187,6 +186,8 @@ int main(void)
 	
   if(app_IsReady(APPLICATION_ADDRESS) == SUCCESS)
 	{
+		/* Enter memory_mapped mode*/
+		w25qxx_Startup(w25qxx_DTRMode);
 		/* Disable CPU L1 cache before jumping to the QSPI code execution */
 		CPU_CACHE_Disable();
 		/* Disable Systick interrupt */
