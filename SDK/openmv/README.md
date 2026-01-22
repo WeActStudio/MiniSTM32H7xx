@@ -33,7 +33,7 @@ LED_BLUE,PE3
 
 1. Clone openmv source code
 ```
-git clone https://github.com/WeActTC/openmv.git --depth=1 -b WeActStudio
+git clone https://github.com/WeActStudio/openmv.git --depth=1 -b WeActStudio
 ```
 
 2. Init source code
