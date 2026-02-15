@@ -1,8 +1,8 @@
 /*
  * This file is part of the OpenMV project.
  *
- * Copyright (c) 2013-2021 Ibrahim Abdelkader <iabdalkader@openmv.io>
- * Copyright (c) 2013-2021 Kwabena W. Agyeman <kwagyeman@openmv.io>
+ * Copyright (c) 2013-2019 Ibrahim Abdelkader <iabdalkader@openmv.io>
+ * Copyright (c) 2013-2019 Kwabena W. Agyeman <kwagyeman@openmv.io>
  *
  * This work is licensed under the MIT license, see the file LICENSE for details.
  *
@@ -23,8 +23,11 @@
 // Enable YUV LUT
 //#define IMLIB_ENABLE_YUV_LUT
 
-// Enable ISP ops
-#define IMLIB_ENABLE_ISP_OPS
+// Enable mean pooling
+#define IMLIB_ENABLE_MEAN_POOLING
+
+// Enable midpoint pooling
+#define IMLIB_ENABLE_MIDPOINT_POOLING
 
 // Enable binary ops
 #define IMLIB_ENABLE_BINARY_OPS
@@ -58,6 +61,9 @@
 
 // Enable bilateral()
 #define IMLIB_ENABLE_BILATERAL
+
+// Enable cartoon()
+// #define IMLIB_ENABLE_CARTOON
 
 // Enable linpolar()
 #define IMLIB_ENABLE_LINPOLAR
@@ -96,7 +102,6 @@
 
 // Enable find_apriltags() (64 KB)
 #define IMLIB_ENABLE_APRILTAGS
-#define IMLIB_ENABLE_APRILTAGS_TAG36H11
 
 // Enable fine find_apriltags() - (8-way connectivity versus 4-way connectivity)
 // #define IMLIB_ENABLE_FINE_APRILTAGS
@@ -110,11 +115,18 @@
 // Enable find_barcodes() (42 KB)
 #define IMLIB_ENABLE_BARCODES
 
-// Enable find_features()
-#define IMLIB_ENABLE_FEATURES
+// Enable CMSIS NN
+// #if !defined(CUBEAI)
+// #define IMLIB_ENABLE_CNN
+// #endif
 
-// Enable AGAST.
-#define IMLIB_ENABLE_AGAST
+// Enable Tensor Flow
+#if !defined(CUBEAI)
+#define IMLIB_ENABLE_TF
+#endif
+
+// Enable FAST (20+ KBs).
+// #define IMLIB_ENABLE_FAST
 
 // Enable find_template()
 #define IMLIB_FIND_TEMPLATE
@@ -123,24 +135,18 @@
 #define IMLIB_ENABLE_FIND_LBP
 
 // Enable find_keypoints()
-#if defined(IMLIB_ENABLE_FAST) || defined(IMLIB_ENABLE_AGAST)
 #define IMLIB_ENABLE_FIND_KEYPOINTS
-#endif
 
 // Enable load, save and match descriptor
 #define IMLIB_ENABLE_DESCRIPTOR
 
 // Enable find_hog()
-// #define IMLIB_ENABLE_HOG
+#define IMLIB_ENABLE_HOG
 
 // Enable selective_search()
 // #define IMLIB_ENABLE_SELECTIVE_SEARCH
 
-// Enable PNG encoder/decoder
-#define IMLIB_ENABLE_PNG_ENCODER
-#define IMLIB_ENABLE_PNG_DECODER
-
-// Stereo Imaging
-// #define IMLIB_ENABLE_STEREO_DISPARITY
+// Enable STM32 DMA2D
+#define IMLIB_ENABLE_DMA2D
 
 #endif //__IMLIB_CONFIG_H__

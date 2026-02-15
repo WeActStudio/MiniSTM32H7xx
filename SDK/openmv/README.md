@@ -2,7 +2,7 @@
 
 1. Example -> 例程
 2. Firmwares -> openmv固件，内有烧录下载教程
-3. Ports -> WeAct Studio STM32H750 核心板接口定义
+3. Ports -> WeAct Studio STM32H750\H743 核心板接口定义
 
 ## 接口定义 Interface Definition
 > 具体接口定义(Concrete interface definition) `Ports\micropython\boards\WeActStudioSTM32H7xx\mpconfigboard.h`
@@ -29,7 +29,7 @@ P16,PA3
 LED_BLUE,PE3
 ```
 
-## How to Build OpenMV
+## How to Build OpenMV, Below V4.4.1
 
 1. Clone openmv source code
 ```
