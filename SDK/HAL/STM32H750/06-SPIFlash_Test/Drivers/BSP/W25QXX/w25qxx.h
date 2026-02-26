@@ -46,11 +46,11 @@
 #define W25QXXXX_SUBSECTOR_SIZE              0x1000    /* 1024 subsectors of 4kBytes */
 #define W25QXXXX_PAGE_SIZE                   0x100     /* 16384 pages of 256 bytes */
 
-#define W25Q80  0XEF13
-#define W25Q16  0XEF14
-#define W25Q32  0XEF15
-#define W25Q64  0XEF16
-#define W25Q128 0XEF17
+#define x25Q80  0X13
+#define x25Q16  0X14
+#define x25Q32  0X15
+#define x25Q64  0X16
+#define x25Q128 0X17
 
 #define W25QXXXX_DUMMY_CYCLES_READ           4
 #define W25QXXXX_DUMMY_CYCLES_READ_QUAD      10

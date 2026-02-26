@@ -21,6 +21,16 @@ void w25qxx_Init(void)
 	MX_QUADSPI_Init();
 	QSPI_ResetDevice(&hqspi);
 	HAL_Delay(0); // 1ms wait device stable
+	
+	uint8_t stareg2;
+	stareg2 = w25qxx_ReadSR(W25X_ReadStatusReg2);
+	if((stareg2 & 0X02) == 0) //QE bit not enable
+	{
+		W25qxx_WriteEnable();
+		stareg2 |= 1<<1; // enable QE bit
+		w25qxx_WriteSR(W25X_WriteStatusReg2,stareg2);
+	}
+	
 	w25qxx_ID = w25qxx_GetID();
 	w25qxx_ReadAllStatusReg();
 }
@@ -31,7 +41,7 @@ uint16_t w25qxx_GetID(void)
 	uint16_t deviceID;
 	
 	if(w25qxx_Mode == w25qxx_SPIMode)
-		QSPI_Send_CMD(&hqspi,W25X_QUAD_ManufactDeviceID,0x00,QSPI_ADDRESS_24_BITS,6,QSPI_INSTRUCTION_1_LINE,QSPI_ADDRESS_4_LINES, QSPI_DATA_4_LINES, sizeof(ID));
+		QSPI_Send_CMD(&hqspi,W25X_ManufactDeviceID,0x00,QSPI_ADDRESS_24_BITS,0,QSPI_INSTRUCTION_1_LINE,QSPI_ADDRESS_1_LINE, QSPI_DATA_1_LINE, sizeof(ID));
 	else
 		QSPI_Send_CMD(&hqspi,W25X_ManufactDeviceID,0x00,QSPI_ADDRESS_24_BITS,0,QSPI_INSTRUCTION_4_LINES,QSPI_ADDRESS_4_LINES, QSPI_DATA_4_LINES, sizeof(ID));
 

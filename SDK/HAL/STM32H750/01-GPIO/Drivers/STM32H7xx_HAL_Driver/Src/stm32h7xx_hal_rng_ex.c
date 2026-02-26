@@ -30,7 +30,7 @@
 
 #if defined(RNG)
 
-/** @addtogroup RNG_Ex
+/** @addtogroup RNGEx
   * @brief RNG Extended HAL module driver.
   * @{
   */
@@ -45,16 +45,16 @@
 /*  Health test control register information to use in CCM algorithm */
 #define RNG_HTCFG_1   0x17590ABCU /*!< Magic number */
 #if defined(RNG_VER_3_1) || defined(RNG_VER_3_0)
-#define RNG_HTCFG     0x000CAA74U /*!< For best latency and to be compliant with NIST */
+#define RNG_HTCFG     0x000CAA74U /*!< Recommended value for NIST compliance, refer to application note AN4230 */
 #else /* RNG_VER_3_2 */
-#define RNG_HTCFG     0x00007274U /*!< For best latency and to be compliant with NIST */
+#define RNG_HTCFG     0x00007274U /*!< Recommended value for NIST compliance, refer to application note AN4230 */
 #endif /* RNG_VER_3_1 || RNG_VER_3_0 */
 /**
   * @}
   */
 /* Private variables ---------------------------------------------------------*/
 /* Private constants ---------------------------------------------------------*/
-/** @addtogroup RNG_Ex_Private_Constants
+/** @addtogroup RNGEx_Private_Constants
   * @{
   */
 #define RNG_TIMEOUT_VALUE     2U
@@ -66,11 +66,11 @@
 /* Private functions  --------------------------------------------------------*/
 /* Exported functions --------------------------------------------------------*/
 
-/** @addtogroup RNG_Ex_Exported_Functions
+/** @defgroup RNGEx_Exported_Functions RNGEx Exported Functions
   * @{
   */
 
-/** @addtogroup RNG_Ex_Exported_Functions_Group1
+/** @defgroup RNGEx_Exported_Functions_Group1 Configuration and lock functions
   *  @brief   Configuration functions
   *
 @verbatim
@@ -90,12 +90,12 @@
   *         RNG_ConfigTypeDef.
   * @param  hrng pointer to a RNG_HandleTypeDef structure that contains
   *          the configuration information for RNG.
-  * @param  pConf: pointer to a RNG_ConfigTypeDef structure that contains
+  * @param  pConf pointer to a RNG_ConfigTypeDef structure that contains
   *         the configuration information for RNG module
 
   * @retval HAL status
   */
-HAL_StatusTypeDef HAL_RNGEx_SetConfig(RNG_HandleTypeDef *hrng, RNG_ConfigTypeDef *pConf)
+HAL_StatusTypeDef HAL_RNGEx_SetConfig(RNG_HandleTypeDef *hrng, const RNG_ConfigTypeDef *pConf)
 {
   uint32_t tickstart;
   uint32_t cr_value;
@@ -141,7 +141,7 @@ HAL_StatusTypeDef HAL_RNGEx_SetConfig(RNG_HandleTypeDef *hrng, RNG_ConfigTypeDef
 #if defined(RNG_VER_3_2) || defined(RNG_VER_3_1) || defined(RNG_VER_3_0)
     /*!< magic number must be written immediately before to RNG_HTCRG */
     WRITE_REG(hrng->Instance->HTCR, RNG_HTCFG_1);
-    /* for best latency and to be compliant with NIST */
+    /* Recommended value for NIST compliance, refer to application note AN4230 */
     WRITE_REG(hrng->Instance->HTCR, RNG_HTCFG);
 #endif /* RNG_VER_3_2 || RNG_VER_3_1 || RNG_VER_3_0 */
 
@@ -189,7 +189,7 @@ HAL_StatusTypeDef HAL_RNGEx_SetConfig(RNG_HandleTypeDef *hrng, RNG_ConfigTypeDef
   *         RNG_ConfigTypeDef.
   * @param  hrng pointer to a RNG_HandleTypeDef structure that contains
   *          the configuration information for RNG.
-  * @param  pConf: pointer to a RNG_ConfigTypeDef structure that contains
+  * @param  pConf pointer to a RNG_ConfigTypeDef structure that contains
   *         the configuration information for RNG module
 
   * @retval HAL status
@@ -283,12 +283,12 @@ HAL_StatusTypeDef HAL_RNGEx_LockConfig(RNG_HandleTypeDef *hrng)
   * @}
   */
 
-/** @addtogroup RNG_Ex_Exported_Functions_Group2
+/** @defgroup RNGEx_Exported_Functions_Group2 Recover from seed error function
   *  @brief   Recover from seed error function
   *
 @verbatim
  ===============================================================================
-          ##### Configuration and lock functions #####
+          ##### Recover from seed error function #####
  ===============================================================================
     [..]  This section provide function allowing to:
       (+) Recover from a seed error
@@ -320,6 +320,11 @@ HAL_StatusTypeDef HAL_RNGEx_RecoverSeedError(RNG_HandleTypeDef *hrng)
 
     /* sequence to fully recover from a seed error */
     status = RNG_RecoverSeedError(hrng);
+    if (status == HAL_ERROR)
+    {
+      /* Update the error code */
+      hrng->ErrorCode = HAL_RNG_ERROR_RECOVERSEED;
+    }
   }
   else
   {

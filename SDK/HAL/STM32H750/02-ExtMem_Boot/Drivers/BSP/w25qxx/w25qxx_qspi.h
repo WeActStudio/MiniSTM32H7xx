@@ -51,7 +51,6 @@ typedef enum
 #define W25X_EnableReset         0x66
 #define W25X_ResetDevice         0x99
 
-#define W25X_QUAD_FAST_READ_DTR_CMD               0x0D
 #define W25X_QUAD_INOUT_FAST_READ_CMD             0xEB
 #define W25X_QUAD_INOUT_FAST_READ_DTR_CMD         0xED
 #define W25X_QUAD_INOUT_FAST_READ_4_BYTE_ADDR_CMD 0xEC
@@ -66,9 +65,6 @@ typedef enum
 /* Dummy cycles for DTR read mode */
 #define W25X_DUMMY_CYCLES_READ_QUAD_DTR  4U
 #define W25X_DUMMY_CYCLES_READ_QUAD      6U
-
-/* Dummy cycles for Fast read mode */
-#define W25X_DUMMY_CYCLES_FAST_READ     8U
 
 /**
   * @brief  W25Qxx Registers

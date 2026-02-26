@@ -6,6 +6,17 @@
   *          This file provides firmware functions to manage the following
   *          functionalities of PWR extension peripheral:
   *           + Peripheral Extended features functions
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2017 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
   @verbatim
   ==============================================================================
                         ##### How to use this driver #####
@@ -102,7 +113,7 @@
    (#) Call HAL_PWREx_EnableUSBReg(), HAL_PWREx_DisableUSBReg(),
        HAL_PWREx_EnableUSBVoltageDetector() and
        HAL_PWREx_DisableUSBVoltageDetector() functions to manage USB power
-       regulation functionnalities.
+       regulation functionalities.
 
    (#) Call HAL_PWREx_EnableBatteryCharging() and
        HAL_PWREx_DisableBatteryCharging() functions to enable and disable the
@@ -136,18 +147,6 @@
        AVD interrupt request.
 
   @endverbatim
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
-  *
-  ******************************************************************************
   */
 
 /* Includes ------------------------------------------------------------------*/
@@ -309,6 +308,10 @@
   *         PWR_SMPS_2V5_SUPPLIES_EXT_AND_LDO, PWR_SMPS_1V8_SUPPLIES_EXT and
   *         PWR_SMPS_2V5_SUPPLIES_EXT are used only for lines that supports SMPS
   *         regulator.
+  * @note   This API is deprecated and is kept only for backward compatibility's sake.
+  *         The power supply configuration is handled as part of the system initialization
+  *         process during startup.
+  *         For more details, please refer to the power control chapter in the reference manual
   * @retval HAL status.
   */
 HAL_StatusTypeDef HAL_PWREx_ConfigSupply (uint32_t SupplySource)
@@ -1300,7 +1303,7 @@ void HAL_PWREx_DisableMemoryShutOff (uint32_t MemoryBlock)
   *         Cortex-M4.
   * @retval None.
   */
-void HAL_PWREx_EnableWakeUpPin (PWREx_WakeupPinTypeDef *sPinParams)
+void HAL_PWREx_EnableWakeUpPin (const PWREx_WakeupPinTypeDef *sPinParams)
 {
   uint32_t pinConfig;
   uint32_t regMask;
@@ -1974,7 +1977,7 @@ PWREx_MMC_VoltageLevel HAL_PWREx_GetMMCVoltage (void)
   *         only Cortex-M4 and wake up Cortex-M7 and Cortex-M4.
   * @retval None.
   */
-void HAL_PWREx_ConfigAVD (PWREx_AVDTypeDef *sConfigAVD)
+void HAL_PWREx_ConfigAVD (const PWREx_AVDTypeDef *sConfigAVD)
 {
   /* Check the parameters */
   assert_param (IS_PWR_AVD_LEVEL (sConfigAVD->AVDLevel));
@@ -2059,8 +2062,11 @@ void HAL_PWREx_PVD_AVD_IRQHandler (void)
         /* PWR PVD interrupt user callback */
         HAL_PWR_PVDCallback ();
 
-        /* Clear PWR EXTI D1/CD pending bit */
-        __HAL_PWR_PVD_EXTI_CLEAR_FLAG ();
+        if(__HAL_PWR_GET_FLAG (PWR_FLAG_AVDO) == 0U)
+        {
+          /* Clear PWR EXTI D1/CD pending bit */
+          __HAL_PWR_PVD_EXTI_CLEAR_FLAG ();
+        }
       }
     }
 #if defined (DUAL_CORE)
@@ -2072,8 +2078,11 @@ void HAL_PWREx_PVD_AVD_IRQHandler (void)
         /* PWR PVD interrupt user callback */
         HAL_PWR_PVDCallback ();
 
-        /* Clear PWR EXTI D2 pending bit */
-        __HAL_PWR_PVD_EXTID2_CLEAR_FLAG();
+        if(__HAL_PWR_GET_FLAG (PWR_FLAG_AVDO) == 0U)
+        {
+          /* Clear PWR EXTI D2 pending bit */
+          __HAL_PWR_PVD_EXTID2_CLEAR_FLAG ();
+        }
       }
     }
 #endif /* defined (DUAL_CORE) */
@@ -2092,8 +2101,11 @@ void HAL_PWREx_PVD_AVD_IRQHandler (void)
         /* PWR AVD interrupt user callback */
         HAL_PWREx_AVDCallback ();
 
-        /* Clear PWR EXTI D1/CD pending bit */
-        __HAL_PWR_AVD_EXTI_CLEAR_FLAG ();
+        if(__HAL_PWR_GET_FLAG (PWR_FLAG_PVDO) == 0U)
+        {
+          /* Clear PWR EXTI D1/CD pending bit */
+          __HAL_PWR_AVD_EXTI_CLEAR_FLAG ();
+        }
       }
     }
 #if defined (DUAL_CORE)
@@ -2105,8 +2117,11 @@ void HAL_PWREx_PVD_AVD_IRQHandler (void)
         /* PWR AVD interrupt user callback */
         HAL_PWREx_AVDCallback ();
 
-        /* Clear PWR EXTI D2 pending bit */
-        __HAL_PWR_AVD_EXTID2_CLEAR_FLAG ();
+        if(__HAL_PWR_GET_FLAG (PWR_FLAG_PVDO) == 0U)
+        {
+          /* Clear PWR EXTI D2 pending bit */
+          __HAL_PWR_AVD_EXTID2_CLEAR_FLAG ();
+        }
       }
     }
 #endif /* defined (DUAL_CORE) */
@@ -2141,4 +2156,3 @@ __weak void HAL_PWREx_AVDCallback (void)
   * @}
   */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

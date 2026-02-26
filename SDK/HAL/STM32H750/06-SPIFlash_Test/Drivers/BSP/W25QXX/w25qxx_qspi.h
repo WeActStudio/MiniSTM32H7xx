@@ -66,8 +66,6 @@ typedef enum
 #define W25X_DUMMY_CYCLES_READ_QUAD_DTR  4U
 #define W25X_DUMMY_CYCLES_READ_QUAD      6U
 
-
-
 /**
   * @brief  W25Qxx Registers
   */
