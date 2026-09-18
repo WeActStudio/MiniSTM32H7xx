@@ -120,7 +120,7 @@ static void LED_Blink(uint32_t Hdelay,uint32_t Ldelay)
   */
 static void RTC_CalendarShow(RTC_DateTypeDef *sdatestructureget,RTC_TimeTypeDef *stimestructureget)
 {
-  /* ±ÿ–ÎÕ¨ ±ªÒ»° ±º‰∫Õ»’∆⁄ ≤ª»ªª·µº÷¬œ¬¥ŒRTC≤ªƒ‹∂¡»° */
+  /* ÂøÖÈ°ªÂêåÊó∂Ëé∑ÂèñÊó∂Èó¥ÂíåÊó•Êúü ‰∏çÁÑ∂‰ºöÂØºËá¥‰∏ãÊ¨°RTC‰∏çËÉΩËØªÂèñ */
   /* Both time and date must be obtained or RTC cannot be read next time */
   /* Get the RTC current Time */
   HAL_RTC_GetTime(&hrtc, stimestructureget, RTC_FORMAT_BIN);
@@ -136,6 +136,7 @@ static void RTC_CalendarShow(RTC_DateTypeDef *sdatestructureget,RTC_TimeTypeDef 
   */
 int main(void)
 {
+
   /* USER CODE BEGIN 1 */
 	
   #ifdef W25Qxx
@@ -212,15 +213,18 @@ void SystemClock_Config(void)
   /** Supply configuration update enable
   */
   HAL_PWREx_ConfigSupply(PWR_LDO_SUPPLY);
+
   /** Configure the main internal regulator output voltage
   */
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE0);
 
   while(!__HAL_PWR_GET_FLAG(PWR_FLAG_VOSRDY)) {}
+
   /** Configure LSE Drive Capability
   */
   HAL_PWR_EnableBkUpAccess();
-  __HAL_RCC_LSEDRIVE_CONFIG(RCC_LSEDRIVE_LOW);
+  __HAL_RCC_LSEDRIVE_CONFIG(RCC_LSEDRIVE_MEDIUMHIGH);
+
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
@@ -241,6 +245,7 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+
   /** Initializes the CPU, AHB and APB buses clocks
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
@@ -275,8 +280,7 @@ void Error_Handler(void)
   LED_Blink(500,500);
   /* USER CODE END Error_Handler_Debug */
 }
-
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
   *         where the assert_param error has occurred.
@@ -292,5 +296,3 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

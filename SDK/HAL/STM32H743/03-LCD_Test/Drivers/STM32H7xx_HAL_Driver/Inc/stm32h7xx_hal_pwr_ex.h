@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2017 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -545,7 +544,7 @@ void HAL_PWREx_EnableMemoryShutOff  (uint32_t MemoryBlock);
 void HAL_PWREx_DisableMemoryShutOff (uint32_t MemoryBlock);
 #endif /* defined(PWR_CR1_SRDRAMSO) */
 /* Wakeup Pins control functions */
-void HAL_PWREx_EnableWakeUpPin              (PWREx_WakeupPinTypeDef *sPinParams);
+void HAL_PWREx_EnableWakeUpPin              (const PWREx_WakeupPinTypeDef *sPinParams);
 void HAL_PWREx_DisableWakeUpPin             (uint32_t WakeUpPin);
 uint32_t HAL_PWREx_GetWakeupFlag            (uint32_t WakeUpFlag);
 HAL_StatusTypeDef HAL_PWREx_ClearWakeupFlag (uint32_t WakeUpFlag);
@@ -600,7 +599,7 @@ uint32_t HAL_PWREx_GetVBATLevel        (void);
 PWREx_MMC_VoltageLevel HAL_PWREx_GetMMCVoltage (void);
 #endif /* PWR_CSR1_MMCVDO */
 /* Power AVD configuration functions */
-void HAL_PWREx_ConfigAVD  (PWREx_AVDTypeDef *sConfigAVD);
+void HAL_PWREx_ConfigAVD  (const PWREx_AVDTypeDef *sConfigAVD);
 void HAL_PWREx_EnableAVD  (void);
 void HAL_PWREx_DisableAVD (void);
 /* Power PVD/AVD IRQ Handler */
@@ -788,4 +787,3 @@ void HAL_PWREx_AVDCallback        (void);
 
 #endif /* STM32H7xx_HAL_PWR_EX_H */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

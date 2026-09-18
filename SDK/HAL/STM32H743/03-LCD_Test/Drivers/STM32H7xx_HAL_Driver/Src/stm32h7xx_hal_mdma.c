@@ -7,6 +7,17 @@
   *           + Initialization/de-initialization functions
   *           + I/O operation functions
   *           + Peripheral State and errors functions
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2017 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
   @verbatim
   ==============================================================================
                         ##### How to use this driver #####
@@ -132,19 +143,7 @@
 
     [..]
 
-    @endverbatim
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
-  *
-  ******************************************************************************
+  @endverbatim
   */
 
 /* Includes ------------------------------------------------------------------*/
@@ -709,7 +708,7 @@ HAL_StatusTypeDef HAL_MDMA_LinkedList_CreateNode(MDMA_LinkNodeTypeDef *pNode, MD
   *
   * @retval HAL status
   */
-HAL_StatusTypeDef HAL_MDMA_LinkedList_AddNode(MDMA_HandleTypeDef *hmdma, MDMA_LinkNodeTypeDef *pNewNode, MDMA_LinkNodeTypeDef *pPrevNode)
+HAL_StatusTypeDef HAL_MDMA_LinkedList_AddNode(MDMA_HandleTypeDef *hmdma, MDMA_LinkNodeTypeDef *pNewNode, const MDMA_LinkNodeTypeDef *pPrevNode)
 {
   MDMA_LinkNodeTypeDef *pNode;
   uint32_t counter = 0, nodeInserted = 0;
@@ -1720,7 +1719,7 @@ void HAL_MDMA_IRQHandler(MDMA_HandleTypeDef *hmdma)
   *               the configuration information for the specified MDMA Channel.
   * @retval HAL state
   */
-HAL_MDMA_StateTypeDef HAL_MDMA_GetState(MDMA_HandleTypeDef *hmdma)
+HAL_MDMA_StateTypeDef HAL_MDMA_GetState(const MDMA_HandleTypeDef *hmdma)
 {
   return hmdma->State;
 }
@@ -1731,7 +1730,7 @@ HAL_MDMA_StateTypeDef HAL_MDMA_GetState(MDMA_HandleTypeDef *hmdma)
   *              the configuration information for the specified MDMA Channel.
   * @retval MDMA Error Code
   */
-uint32_t HAL_MDMA_GetError(MDMA_HandleTypeDef *hmdma)
+uint32_t HAL_MDMA_GetError(const MDMA_HandleTypeDef *hmdma)
 {
   return hmdma->ErrorCode;
 }
@@ -1898,4 +1897,3 @@ static void MDMA_Init(MDMA_HandleTypeDef *hmdma)
   * @}
   */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
