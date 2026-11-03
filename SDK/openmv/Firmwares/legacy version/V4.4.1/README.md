@@ -11,7 +11,7 @@
 百度网盘: https://pan.baidu.com/s/1wPy3f_cRzPJc_YnOVKTprA 
 提取码: rji7
 ```
-[STM32 下载烧录教程以及问题汇总](http://blog.weactstudio.com/2019/11/30/STM32Download/)
+[STM32 下载烧录教程以及问题汇总](https://blog.weactstudio.com/posts/stm32-download-tutorial/)
 
 ## QSPI Flash
 > Openmv 固件放在外部8MB QSPI Flash，所以需要先下载0x08000000.hex，初始化QSPI外设，将QSPI Flash映射到0x90000000，具体见文件夹README.md。
