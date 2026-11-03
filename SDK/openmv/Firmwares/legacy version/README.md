@@ -7,7 +7,7 @@
 
 > 烧录方法见对应文件夹的`README.md`或者见下面连接
 
-[STM32 下载烧录教程以及问题汇总](http://www.weact-tc.cn/2019/11/30/STM32Download/)
+[STM32 下载烧录教程以及问题汇总](http://blog.weactstudio.com/2019/11/30/STM32Download/)
 
 # SPI Flash Erase Firmware
 > 当出现U盘无法识别的时候（py代码编写错误引起），可以烧录该固件擦除SPI Flash
